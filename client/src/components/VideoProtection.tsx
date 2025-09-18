@@ -7,6 +7,14 @@ interface VideoProtectionProps {
 
 export function VideoProtection({ onViolationDetected, onAdBlockDetected }: VideoProtectionProps) {
   useEffect(() => {
+    // Detectar ambiente local e desabilitar proteções
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    
+    if (isLocalhost) {
+      console.log("🚀 Modo Local Detectado - Proteções de Vídeo Desabilitadas para Desenvolvimento");
+      return;
+    }
+    
     // 1. Detectar Ad Blockers (com menos falsos positivos)
     const detectAdBlocker = (): Promise<boolean> => {
       return new Promise((resolve) => {

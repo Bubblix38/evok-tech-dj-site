@@ -6,6 +6,7 @@ import { useState } from "react";
 import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
 import VideoProtection from "@/components/VideoProtection";
 import BackgroundFX from "@/components/BackgroundFX";
+import LocalhostInfo from "@/components/LocalhostInfo";
 
 function CustomVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -212,12 +213,8 @@ export default function FunkVideos() {
         />
       )}
       
-      {/* Indicador de ambiente local */}
-      {isLocalhost && (
-        <div className="fixed top-4 right-4 z-50 bg-green-600 text-white px-3 py-1 rounded-md text-sm font-medium shadow-lg">
-          🚀 Modo Local - Proteções Desabilitadas
-        </div>
-      )}
+      {/* Informações de desenvolvimento local */}
+      <LocalhostInfo isLocalhost={isLocalhost} />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
