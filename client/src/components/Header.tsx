@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, Menu, Music } from "lucide-react";
+import { Link } from "wouter";
 
 interface HeaderProps {
   onThemeToggle?: () => void;
@@ -26,12 +27,12 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
+            <Link href="/" className="text-foreground hover:text-primary transition-colors font-body">
               Home
-            </a>
-            <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
+            </Link>
+            <Link href="/funk-videos" className="text-foreground hover:text-primary transition-colors font-body">
               Funk Videos
-            </a>
+            </Link>
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
               Curso de DJ
             </a>
@@ -72,12 +73,12 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
         {isMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
-              <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
+              <Link href="/" className="text-foreground hover:text-primary transition-colors font-body">
                 Home
-              </a>
-              <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
+              </Link>
+              <Link href="/funk-videos" className="text-foreground hover:text-primary transition-colors font-body">
                 Funk Videos
-              </a>
+              </Link>
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
                 Curso de DJ
               </a>
