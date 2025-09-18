@@ -22,24 +22,25 @@ function CustomVideoPlayer() {
   
   const handleIframeError = () => {
     setLoadError(true);
-    console.log('Video nao pode ser carregado em localhost - modo demonstracao ativado');
+    console.log('Erro ao carregar video do Google Drive');
   };
 
   if (isPlaying) {
-    // Se for localhost, mostrar placeholder funcional
-    if (isLocalhost) {
+    // Se houve erro de carregamento, mostrar placeholder
+    if (loadError) {
       return (
         <div className="aspect-video relative bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900 rounded-t-lg" data-testid="demo-player">
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8">
             <Play className="w-20 h-20 mb-4 text-yellow-400 animate-pulse" fill="currentColor" data-testid="button-play" />
-            <h3 className="text-2xl font-bold mb-4 text-center">Modo Demonstracao Local</h3>
+            <h3 className="text-2xl font-bold mb-4 text-center">Video Indisponivel</h3>
             <p className="text-center text-lg mb-4 max-w-md">
               <strong>"A Caminho da Treta"</strong><br/>
               Noobreak, Douth! & DFranco
             </p>
             <p className="text-sm text-gray-300 text-center max-w-lg">
-              Os videos do Google Drive nao funcionam em localhost por seguranca.<br/>
-              Em producao, este sera o video completo com qualidade HD!
+              Erro ao carregar o video. Tente novamente mais tarde.
+              {isLocalhost && <br/>}
+              {isLocalhost && "Modo desenvolvimento: Este seria o video completo em producao."}
             </p>
             <div className="mt-6 w-full bg-gray-700 rounded-full h-2">
               <div className="bg-gradient-to-r from-yellow-400 to-pink-500 h-2 rounded-full animate-pulse" style={{width: '35%'}}></div>
@@ -53,7 +54,7 @@ function CustomVideoPlayer() {
       );
     }
     
-    // Modo produção - usar iframe normal
+    // Tentar carregar o iframe real do Google Drive
     return (
       <div className="aspect-video relative">
         <iframe
@@ -68,14 +69,6 @@ function CustomVideoPlayer() {
           loading="lazy"
           onError={handleIframeError}
         />
-        {loadError && (
-          <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center text-white p-4 rounded-t-lg">
-            <div className="text-center">
-              <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-yellow-500" />
-              <p>Video temporariamente indisponivel</p>
-            </div>
-          </div>
-        )}
       </div>
     );
   }
