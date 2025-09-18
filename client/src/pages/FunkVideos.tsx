@@ -7,13 +7,14 @@ import thumbnailImage from "@assets/generated_images/music_video_thumbnail_desig
 import VideoProtection from "@/components/VideoProtection";
 import BackgroundFX from "@/components/BackgroundFX";
 import LocalhostInfo from "@/components/LocalhostInfo";
+import { isDevelopmentMode } from "../utils/environment";
 
 function CustomVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [loadError, setLoadError] = useState(false);
   
-  // Detectar ambiente local
-  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  // Detectar ambiente local usando utilitário
+  const isLocalhost = isDevelopmentMode();
   
   const handlePlay = () => {
     setIsPlaying(true);
@@ -21,31 +22,31 @@ function CustomVideoPlayer() {
   
   const handleIframeError = () => {
     setLoadError(true);
-    console.log('Vídeo não pode ser carregado em localhost - modo demonstração ativado');
+    console.log('Video nao pode ser carregado em localhost - modo demonstracao ativado');
   };
 
   if (isPlaying) {
     // Se for localhost, mostrar placeholder funcional
     if (isLocalhost) {
       return (
-        <div className="aspect-video relative bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900 rounded-t-lg">
+        <div className="aspect-video relative bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900 rounded-t-lg" data-testid="demo-player">
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8">
-            <Play className="w-20 h-20 mb-4 text-yellow-400 animate-pulse" fill="currentColor" />
-            <h3 className="text-2xl font-bold mb-4 text-center">🎵 Modo Demonstração Local</h3>
+            <Play className="w-20 h-20 mb-4 text-yellow-400 animate-pulse" fill="currentColor" data-testid="button-play" />
+            <h3 className="text-2xl font-bold mb-4 text-center">Modo Demonstracao Local</h3>
             <p className="text-center text-lg mb-4 max-w-md">
               <strong>"A Caminho da Treta"</strong><br/>
               Noobreak, Douth! & DFranco
             </p>
             <p className="text-sm text-gray-300 text-center max-w-lg">
-              💡 Os vídeos do Google Drive não funcionam em localhost por segurança.<br/>
-              📺 Em produção, este será o vídeo completo com qualidade HD!
+              Os videos do Google Drive nao funcionam em localhost por seguranca.<br/>
+              Em producao, este sera o video completo com qualidade HD!
             </p>
             <div className="mt-6 w-full bg-gray-700 rounded-full h-2">
               <div className="bg-gradient-to-r from-yellow-400 to-pink-500 h-2 rounded-full animate-pulse" style={{width: '35%'}}></div>
             </div>
             <div className="flex items-center gap-4 mt-4 text-sm text-gray-400">
-              <span>⏱️ 1:32 / 4:23</span>
-              <span>🔊 Volume: 85%</span>
+              <span>1:32 / 4:23</span>
+              <span>Volume: 85%</span>
             </div>
           </div>
         </div>
@@ -71,7 +72,7 @@ function CustomVideoPlayer() {
           <div className="absolute inset-0 bg-black bg-opacity-75 flex items-center justify-center text-white p-4 rounded-t-lg">
             <div className="text-center">
               <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-yellow-500" />
-              <p>Vídeo temporariamente indisponível</p>
+              <p>Video temporariamente indisponivel</p>
             </div>
           </div>
         )}
@@ -100,18 +101,19 @@ export default function FunkVideos() {
   const [isBlocked, setIsBlocked] = useState(false);
   const [adBlockDetected, setAdBlockDetected] = useState(false);
   
-  // Detectar ambiente local e desabilitar proteções
-  const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  // Detectar ambiente local usando utilitário
+  const isLocalhost = isDevelopmentMode();
   
   const handleViolationDetected = () => {
     // Não bloquear em localhost para desenvolvimento
+    // Nao bloquear em localhost para desenvolvimento
     if (!isLocalhost) {
       setIsBlocked(true);
     }
   };
 
   const handleAdBlockDetected = () => {
-    // Não detectar ad-block em localhost
+    // Nao detectar ad-block em localhost
     if (!isLocalhost) {
       setAdBlockDetected(true);
     }
