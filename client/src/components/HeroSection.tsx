@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Play, Download } from "lucide-react";
 import heroBackground from "@assets/generated_images/90s_music_hero_background_d7797857.png";
+import RetroMusicEffects from "./RetroMusicEffects";
 
 interface HeroSectionProps {
   onPlayPreview?: () => void;
@@ -18,6 +19,9 @@ export default function HeroSection({ onPlayPreview, onDownload }: HeroSectionPr
         backgroundAttachment: 'fixed'
       }}
     >
+      {/* Retro Music Interactive Effects */}
+      <RetroMusicEffects />
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full animate-pulse" />
