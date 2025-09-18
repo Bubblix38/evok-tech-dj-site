@@ -29,7 +29,7 @@ export default function FunkVideos() {
                 className="w-full h-full rounded-t-lg"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                title="Evok Tech DJ - Live Set 2025"
+                title="A Caminho da Treta - Noobreak, Douth! & DFranco"
                 width="100%"
                 height="100%"
                 frameBorder="0"
@@ -38,7 +38,7 @@ export default function FunkVideos() {
             </div>
             <div className="p-6">
               <h3 className="font-display font-semibold text-lg mb-2">
-                Evok Tech DJ - Live Set 2025
+                A Caminho da Treta - Noobreak, Douth! & DFranco
               </h3>
               <p className="text-muted-foreground text-sm mb-4">
                 Exclusive live performance featuring the latest funk remixes
