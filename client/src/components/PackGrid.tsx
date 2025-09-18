@@ -1,4 +1,5 @@
-import MusicPackCard, { type MusicPack } from "./MusicPackCard";
+import MusicPackCard from "./MusicPackCard";
+import { type MusicPack } from "@shared/schema";
 
 interface PackGridProps {
   packs: MusicPack[];

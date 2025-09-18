@@ -1,19 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Play, Download, Clock } from "lucide-react";
-
-export interface MusicPack {
-  id: string;
-  title: string;
-  artist: string;
-  coverUrl: string;
-  duration: string;
-  tracks: number;
-  genre: string;
-  size: string;
-  releaseDate: string;
-  featured?: boolean;
-}
+import { type MusicPack } from "@shared/schema";
+import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
 
 interface MusicPackCardProps {
   pack: MusicPack;
@@ -40,7 +29,7 @@ export default function MusicPackCard({ pack, onPlay, onDownload, onClick }: Mus
         onClick={() => onClick?.(pack.id)}
       >
         <img 
-          src={pack.coverUrl} 
+          src={pack.coverUrl || packCover} 
           alt={pack.title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           data-testid={`img-pack-cover-${pack.id}`}
