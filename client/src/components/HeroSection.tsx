@@ -36,23 +36,21 @@ export default function HeroSection({ onPlayPreview, onDownload }: HeroSectionPr
 
           {/* Main Heading */}
           <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-none">
-            90s REMIX
-            <br />
             <span className="bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent">
-              PACK
+              EVOK TECH DJ
             </span>
           </h1>
 
           {/* Subtitle */}
           <div className="space-y-3 mb-8">
             <p className="text-xl md:text-2xl text-white/90 font-body">
-              Relive the golden era of music with the 90s REMIX Pack!
+              Relive the golden era of music with Evok Tech DJ!
             </p>
             <p className="text-lg md:text-xl text-white/80 font-body">
               Iconic 90s anthems remixed with a fresh, modern sound
             </p>
             <p className="text-base md:text-lg text-white/70 font-body italic">
-              Revive la mejor época musical con el 90s REMIX Pack!
+              Revive la mejor época musical con Evok Tech DJ!
             </p>
           </div>
 

@@ -8,7 +8,7 @@ export default function AudioPlayerExample() {
   // todo: remove mock functionality
   const mockTrack = {
     id: "sample-track",
-    title: "90s Anthem Remix",
+    title: "Evok Tech DJ Anthem",
     artist: "EVOK TECH DJ",
     duration: 240, // 4 minutes in seconds
     url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // placeholder

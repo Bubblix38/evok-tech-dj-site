@@ -10,7 +10,7 @@ export default function PackGridExample() {
   const mockPacks: MusicPack[] = [
     {
       id: "90s-remix-pack",
-      title: "90s REMIX PACK",
+      title: "Evok Tech DJ",
       artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "45:30",

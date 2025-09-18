@@ -45,7 +45,7 @@ export default function Footer() {
             <h3 className="font-display font-semibold text-card-foreground">Genres</h3>
             <nav className="space-y-2">
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
-                90s Remix
+                Evok Tech DJ
               </a>
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
                 House & Techno
@@ -64,7 +64,7 @@ export default function Footer() {
             <h3 className="font-display font-semibold text-card-foreground">Coming Soon</h3>
             <div className="space-y-2 text-muted-foreground font-body text-sm">
               <p>Wedding Pack Series</p>
-              <p>90s REMIX Pack Vol. 2</p>
+              <p>Evok Tech DJ Vol. 2</p>
               <p>Year by Year (Best of) Series</p>
             </div>
           </div>
