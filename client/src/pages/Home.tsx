@@ -5,6 +5,7 @@ import PackGrid from "../components/PackGrid";
 import AudioPlayer from "../components/AudioPlayer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
+import BackgroundFX from "../components/BackgroundFX";
 import { useMusicPacks, useFeaturedPacks, downloadMusicPack } from "../hooks/useMusicPacks";
 import { type MusicPack } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
@@ -79,7 +80,9 @@ export default function Home() {
 
   return (
     <div className={isDarkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background relative">
+        {/* Background particles and scanlines effect */}
+        <BackgroundFX scope="home" density="low" enabled={true} />
         <Header 
           isDarkMode={isDarkMode}
           onThemeToggle={toggleTheme}

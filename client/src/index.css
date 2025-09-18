@@ -120,6 +120,8 @@
   /* Fallback for older browsers */
   --destructive-border: hsl(var(--destructive));
   --destructive-border: hsl(from hsl(var(--destructive)) h s calc(l + var(--opaque-button-border-intensity)) / alpha);
+  
+  /* Vite 5 removes empty fallback selectors, but this should be kept for browsers */
 }
 
 .dark {
@@ -324,5 +326,34 @@
   .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
+  }
+
+  /* Scanlines animation for retro background effect */
+  @keyframes scanlines {
+    0% {
+      transform: translateY(0px);
+    }
+    100% {
+      transform: translateY(1px);
+    }
+  }
+
+  /* Scanlines overlay with different opacities for light/dark mode */
+  .scanlines-overlay {
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 1px, transparent 1px 3px);
+    animation: scanlines 6s linear infinite;
+    opacity: 0.05;
+  }
+
+  .dark .scanlines-overlay {
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px);
+    opacity: 0.05;
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .scanlines-overlay {
+      animation: none;
+    }
   }
 }

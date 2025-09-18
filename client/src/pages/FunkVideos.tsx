@@ -5,6 +5,7 @@ import { Play, ExternalLink, Shield, AlertTriangle, Ban } from "lucide-react";
 import { useState } from "react";
 import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
 import VideoProtection from "@/components/VideoProtection";
+import BackgroundFX from "@/components/BackgroundFX";
 
 function CustomVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -145,7 +146,9 @@ export default function FunkVideos() {
     );
   }
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground relative">
+      {/* Background particles and scanlines effect */}
+      <BackgroundFX scope="funk" density="low" enabled={true} />
       <VideoProtection 
         onViolationDetected={handleViolationDetected}
         onAdBlockDetected={handleAdBlockDetected}
