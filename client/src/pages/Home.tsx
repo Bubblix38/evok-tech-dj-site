@@ -18,10 +18,6 @@ export default function Home() {
   // Fetch data from backend
   const { data: allPacks = [], isLoading: isLoadingAll, error: allPacksError } = useMusicPacks();
   const { data: featuredPacks = [], isLoading: isLoadingFeatured, error: featuredPacksError } = useFeaturedPacks();
-  
-  // Divide Featured packs into two sections of 4 each
-  const topFeaturedPacks = featuredPacks.slice(0, 4);
-  const bottomFeaturedPacks = featuredPacks.slice(4, 8);
 
   const handlePackPlay = (packId: string) => {
     const pack = allPacks.find(p => p.id === packId);
@@ -105,7 +101,7 @@ export default function Home() {
             </div>
           ) : (
             <PackGrid 
-              packs={topFeaturedPacks}
+              packs={featuredPacks}
               title="Featured Packs"
               subtitle="Our most popular remix collections and latest releases"
               onPackPlay={handlePackPlay}
@@ -114,24 +110,6 @@ export default function Home() {
             />
           )}
 
-          {featuredPacksError ? (
-            <div className="py-12 text-center">
-              <div className="text-muted-foreground font-body">Failed to load featured packs. Please refresh the page.</div>
-            </div>
-          ) : isLoadingFeatured ? (
-            <div className="py-12 text-center">
-              <div className="text-muted-foreground font-body">Loading more featured packs...</div>
-            </div>
-          ) : bottomFeaturedPacks.length > 0 && (
-            <PackGrid 
-              packs={bottomFeaturedPacks}
-              title="More Featured Packs"
-              subtitle="Additional premium collections and exclusive releases"
-              onPackPlay={handlePackPlay}
-              onPackDownload={handlePackDownload}
-              onPackClick={handlePackClick}
-            />
-          )}
 
           {/* Coming Soon Section */}
           <section className="py-12 bg-muted/30">
