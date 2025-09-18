@@ -30,7 +30,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
               Home
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
-              Genres
+              Funk Videos
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
               New Releases
@@ -76,7 +76,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
                 Home
               </a>
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
-                Genres
+                Funk Videos
               </a>
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
                 New Releases
