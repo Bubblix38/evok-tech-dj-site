@@ -9,7 +9,7 @@ export default function AudioPlayerExample() {
   const mockTrack = {
     id: "sample-track",
     title: "90s Anthem Remix",
-    artist: "LMB Premium",
+    artist: "EVOK TECH DJ",
     duration: 240, // 4 minutes in seconds
     url: "https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" // placeholder
   };

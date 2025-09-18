@@ -20,7 +20,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
               <Music className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="font-display font-bold text-xl text-foreground">
-              LMB Premium
+              EVOK TECH DJ
             </span>
           </div>
 

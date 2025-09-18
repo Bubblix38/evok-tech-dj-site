@@ -9,7 +9,7 @@ export default function MusicPackCardExample() {
   const mockPack: MusicPack = {
     id: "90s-remix-pack",
     title: "90s REMIX PACK",
-    artist: "LMB Premium",
+    artist: "EVOK TECH DJ",
     coverUrl: packCover,
     duration: "45:30",
     tracks: 15,

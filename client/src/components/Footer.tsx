@@ -12,12 +12,12 @@ export default function Footer() {
                 <Music className="w-5 h-5 text-primary-foreground" />
               </div>
               <span className="font-display font-bold text-xl text-card-foreground">
-                LMB Premium
+                EVOK TECH DJ
               </span>
             </div>
             <p className="text-muted-foreground font-body text-sm leading-relaxed">
               Premium music packs featuring remixed classics and modern beats. 
-              Relive the golden era of music with fresh, contemporary sound.
+              Relive the golden era of music with fresh, contemporary sound from EVOK TECH DJ.
             </p>
           </div>
 
@@ -76,16 +76,16 @@ export default function Footer() {
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2 text-muted-foreground text-sm font-body">
                 <Mail className="w-4 h-4" />
-                <span>info@lmbpremium.com</span>
+                <span>info@evoktech.dj</span>
               </div>
               <div className="flex items-center gap-2 text-muted-foreground text-sm font-body">
                 <Globe className="w-4 h-4" />
-                <span>www.lmbpremium.com</span>
+                <span>www.evoktech.dj</span>
               </div>
             </div>
             
             <div className="text-muted-foreground text-sm font-body">
-              © 2025 LMB Premium. All rights reserved.
+              © 2025 EVOK TECH DJ. All rights reserved.
             </div>
           </div>
         </div>

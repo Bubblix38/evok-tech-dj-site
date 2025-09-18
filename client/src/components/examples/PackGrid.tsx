@@ -11,7 +11,7 @@ export default function PackGridExample() {
     {
       id: "90s-remix-pack",
       title: "90s REMIX PACK",
-      artist: "LMB Premium",
+      artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "45:30",
       tracks: 15,
@@ -23,7 +23,7 @@ export default function PackGridExample() {
     {
       id: "latin-fusion",
       title: "Latin Fusion",
-      artist: "LMB Premium",
+      artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "38:45",
       tracks: 12,
@@ -35,7 +35,7 @@ export default function PackGridExample() {
     {
       id: "tribal-fusion",
       title: "Tribal Fusion Vol. 1",
-      artist: "LMB Premium",
+      artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "42:15",
       tracks: 14,
@@ -46,7 +46,7 @@ export default function PackGridExample() {
     {
       id: "funky-house",
       title: "Funky House Essentials 2025",
-      artist: "LMB Premium",
+      artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "52:30",
       tracks: 18,
@@ -57,7 +57,7 @@ export default function PackGridExample() {
     {
       id: "dance-pop",
       title: "Dance-Pop 2025",
-      artist: "LMB Premium",
+      artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "35:20",
       tracks: 11,
@@ -68,7 +68,7 @@ export default function PackGridExample() {
     {
       id: "80s-remix",
       title: "80s REMIX Pack (2nd Edition)",
-      artist: "LMB Premium",
+      artist: "EVOK TECH DJ",
       coverUrl: packCover,
       duration: "48:10",
       tracks: 16,
