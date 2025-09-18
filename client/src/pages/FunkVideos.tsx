@@ -25,11 +25,15 @@ export default function FunkVideos() {
           <div className="group hover-elevate rounded-lg overflow-hidden bg-card border border-border">
             <div className="aspect-video relative">
               <iframe
-                src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview"
+                src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?autoplay=0"
                 className="w-full h-full rounded-t-lg"
-                allow="autoplay"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 title="Evok Tech DJ - Live Set 2025"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                loading="lazy"
               />
             </div>
             <div className="p-6">
