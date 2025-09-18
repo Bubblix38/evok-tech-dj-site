@@ -25,7 +25,7 @@ export default function FunkVideos() {
           <div className="group hover-elevate rounded-lg overflow-hidden bg-card border border-border">
             <div className="aspect-video relative">
               <iframe
-                src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?autoplay=0"
+                src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?t=1m27s"
                 className="w-full h-full rounded-t-lg"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
