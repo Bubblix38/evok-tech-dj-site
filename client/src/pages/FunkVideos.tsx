@@ -1,9 +1,10 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Play, ExternalLink } from "lucide-react";
+import { Play, ExternalLink, Shield, AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
+import VideoProtection from "@/components/VideoProtection";
 
 function CustomVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -48,8 +49,53 @@ function CustomVideoPlayer() {
 }
 
 export default function FunkVideos() {
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  const handleViolationDetected = () => {
+    setIsBlocked(true);
+  };
+
+  if (isBlocked) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Header />
+        <main className="container mx-auto px-4 py-8">
+          <div className="text-center py-20">
+            <div className="mb-8">
+              <Shield className="w-24 h-24 mx-auto text-destructive mb-6" />
+              <AlertTriangle className="w-16 h-16 mx-auto text-yellow-500 mb-6" />
+            </div>
+            <h1 className="font-display font-bold text-4xl md:text-5xl mb-6 text-destructive">
+              Acesso Bloqueado
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+              Detectamos uso de gerenciadores de download (como IDM) ou ferramentas não autorizadas.
+              Para proteger nosso conteúdo, o acesso foi temporariamente bloqueado.
+            </p>
+            <div className="bg-card border border-border rounded-lg p-6 mb-8 max-w-xl mx-auto">
+              <h3 className="font-semibold text-lg mb-4">Para continuar assistindo:</h3>
+              <ul className="text-left space-y-2 text-muted-foreground">
+                <li>• Desabilite extensões de download</li>
+                <li>• Feche gerenciadores como IDM</li>
+                <li>• Recarregue a página</li>
+              </ul>
+            </div>
+            <Button 
+              size="lg" 
+              onClick={() => window.location.reload()}
+              className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90"
+            >
+              Recarregar Página
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <VideoProtection onViolationDetected={handleViolationDetected} />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
