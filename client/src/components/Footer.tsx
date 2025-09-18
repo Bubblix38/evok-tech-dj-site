@@ -29,7 +29,7 @@ export default function Footer() {
                 Music Packs
               </a>
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
-                New Releases
+                Curso de DJ
               </a>
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
                 Featured Artists

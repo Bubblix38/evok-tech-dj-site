@@ -33,7 +33,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
               Funk Videos
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
-              New Releases
+              Curso de DJ
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
               Contact
@@ -79,7 +79,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
                 Funk Videos
               </a>
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
-                New Releases
+                Curso de DJ
               </a>
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
                 Contact
