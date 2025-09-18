@@ -27,7 +27,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
-              Packs
+              Home
             </a>
             <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
               Genres
@@ -73,7 +73,7 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
           <nav className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
-                Packs
+                Home
               </a>
               <a href="#" className="text-foreground hover:text-primary transition-colors font-body">
                 Genres
