@@ -2,6 +2,50 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Play, ExternalLink } from "lucide-react";
+import { useState } from "react";
+import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
+
+function CustomVideoPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  if (isPlaying) {
+    return (
+      <div className="aspect-video relative">
+        <iframe
+          src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?t=1m27s&autoplay=1"
+          className="w-full h-full rounded-t-lg"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          title="A Caminho da Treta - Noobreak, Douth! & DFranco"
+          width="100%"
+          height="100%"
+          frameBorder="0"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className="aspect-video relative cursor-pointer group" onClick={handlePlay}>
+      <img 
+        src={thumbnailImage} 
+        alt="A Caminho da Treta - Video Thumbnail" 
+        className="w-full h-full object-cover rounded-t-lg"
+      />
+      {/* Play Button Overlay */}
+      <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-t-lg group-hover:bg-black/30 transition-colors">
+        <div className="w-20 h-20 bg-black/70 rounded-full flex items-center justify-center hover-elevate transition-transform group-hover:scale-110">
+          <Play className="w-8 h-8 text-white ml-1" fill="white" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function FunkVideos() {
   return (
@@ -23,25 +67,13 @@ export default function FunkVideos() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Video Card 1 */}
           <div className="group hover-elevate rounded-lg overflow-hidden bg-card border border-border">
-            <div className="aspect-video relative">
-              <iframe
-                src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?t=1m27s"
-                className="w-full h-full rounded-t-lg"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title="A Caminho da Treta - Noobreak, Douth! & DFranco"
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                loading="lazy"
-              />
-            </div>
+            <CustomVideoPlayer />
             <div className="p-6">
               <h3 className="font-display font-semibold text-lg mb-2">
                 A Caminho da Treta - Noobreak, Douth! & DFranco
               </h3>
               <p className="text-muted-foreground text-sm mb-4">
-                Exclusive live performance featuring the latest funk remixes
+                Exclusive funk performance with high-energy beats and remixes
               </p>
               <Button variant="outline" size="sm" className="w-full" onClick={() => window.open('https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=drive_link', '_blank')}>
                 <ExternalLink className="w-4 h-4 mr-2" />
