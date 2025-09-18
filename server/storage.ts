@@ -155,7 +155,7 @@ export class MemStorage implements IStorage {
       createdAt: now,
       updatedAt: now,
       coverUrl: insertPack.coverUrl || null,
-      featured: insertPack.featured || null,
+      featured: insertPack.featured ?? false,
       audioPreviewUrl: insertPack.audioPreviewUrl || null,
       downloadUrl: insertPack.downloadUrl || null
     };

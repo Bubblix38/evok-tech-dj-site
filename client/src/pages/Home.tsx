@@ -7,15 +7,17 @@ import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
 import { useMusicPacks, useFeaturedPacks, downloadMusicPack } from "../hooks/useMusicPacks";
 import { type MusicPack } from "@shared/schema";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<any>(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
+  const { toast } = useToast();
 
   // Fetch data from backend
-  const { data: allPacks = [], isLoading: isLoadingAll } = useMusicPacks();
-  const { data: featuredPacks = [], isLoading: isLoadingFeatured } = useFeaturedPacks();
+  const { data: allPacks = [], isLoading: isLoadingAll, error: allPacksError } = useMusicPacks();
+  const { data: featuredPacks = [], isLoading: isLoadingFeatured, error: featuredPacksError } = useFeaturedPacks();
   
   // Get recent packs (non-featured ones)
   const recentPacks = allPacks.filter(pack => !pack.featured);
@@ -40,9 +42,17 @@ export default function Home() {
     try {
       console.log("Downloading pack:", packId);
       await downloadMusicPack(packId);
+      toast({
+        title: "Download Started",
+        description: "Your pack download has been initiated.",
+      });
     } catch (error) {
       console.error('Download failed:', error);
-      alert('Download failed. Please try again.');
+      toast({
+        title: "Download Failed",
+        description: "There was an error downloading the pack. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -84,7 +94,11 @@ export default function Home() {
             onDownload={handleHeroDownload}
           />
 
-          {isLoadingFeatured ? (
+          {featuredPacksError ? (
+            <div className="py-12 text-center">
+              <div className="text-muted-foreground font-body">Failed to load featured packs. Please refresh the page.</div>
+            </div>
+          ) : isLoadingFeatured ? (
             <div className="py-12 text-center">
               <div className="text-muted-foreground font-body">Loading featured packs...</div>
             </div>
@@ -99,7 +113,11 @@ export default function Home() {
             />
           )}
 
-          {isLoadingAll ? (
+          {allPacksError ? (
+            <div className="py-12 text-center">
+              <div className="text-muted-foreground font-body">Failed to load recent packs. Please refresh the page.</div>
+            </div>
+          ) : isLoadingAll ? (
             <div className="py-12 text-center">
               <div className="text-muted-foreground font-body">Loading recent packs...</div>
             </div>
