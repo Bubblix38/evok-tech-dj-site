@@ -49,11 +49,11 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
     const width = window.innerWidth;
     
     if (width >= 1024) { // Desktop
-      return Math.floor((24 + Math.random() * 12) * baseCount); // 24-36 for low, 36-54 for med
+      return Math.floor((35 + Math.random() * 15) * baseCount); // 35-50 for low, 52-75 for med
     } else if (width >= 768) { // Tablet
-      return Math.floor((16 + Math.random() * 8) * baseCount); // 16-24 for low, 24-36 for med
+      return Math.floor((25 + Math.random() * 10) * baseCount); // 25-35 for low, 37-52 for med
     } else { // Mobile
-      return Math.floor((10 + Math.random() * 6) * baseCount); // 10-16 for low, 15-24 for med
+      return Math.floor((15 + Math.random() * 8) * baseCount); // 15-23 for low, 22-34 for med
     }
   }, []);
 
@@ -63,10 +63,10 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
     const isBackLayer = Math.random() < 0.5; // 50/50 split between layers
     const isPrimary = Math.random() < 0.7; // 70% primary color, 30% yellow
     
-    // Get primary color from CSS variable
+    // Get primary color from CSS variable - aumentando visibilidade
     const primaryHSL = getCSSVariable('--primary');
-    const primaryColor = primaryHSL ? `hsl(${primaryHSL} / 0.12)` : 'hsl(280 75% 65% / 0.12)';
-    const yellowColor = 'hsl(45 90% 55% / 0.10)';
+    const primaryColor = primaryHSL ? `hsl(${primaryHSL} / 0.20)` : 'hsl(280 75% 65% / 0.20)';
+    const yellowColor = 'hsl(45 90% 55% / 0.16)';
     
     return {
       x: Math.random() * canvas.width,
@@ -80,7 +80,7 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
       wiggleOffset: Math.random() * Math.PI * 2,
       wigglePeriod: 6000 + Math.random() * 4000, // 6-10 seconds
       wiggleAmplitude: 6 + Math.random() * 6, // 6-12px
-      opacity: isBackLayer ? 0.08 : 0.12 + Math.random() * 0.06, // back: 0.08, front: 0.12-0.18
+      opacity: isBackLayer ? 0.12 : 0.18 + Math.random() * 0.08, // back: 0.12, front: 0.18-0.26
       blur: isBackLayer ? 1 : 0,
       baseY: Math.random() * canvas.height,
       drift: 12 + Math.random() * 28 // 12-40 px/s velocity range
@@ -89,7 +89,7 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
 
   // Initialize particles
   const initParticles = useCallback((canvas: HTMLCanvasElement) => {
-    const count = Math.min(getParticleCount(density), 40); // Max 40 particles
+    const count = Math.min(getParticleCount(density), 75); // Max 75 particles (aumentado de 40)
     particlesRef.current = Array.from({ length: count }, () => createParticle(canvas));
   }, [density, getParticleCount, createParticle]);
 
