@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Play, ExternalLink, Shield, AlertTriangle } from "lucide-react";
+import { Play, ExternalLink, Shield, AlertTriangle, Ban } from "lucide-react";
 import { useState } from "react";
 import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
 import VideoProtection from "@/components/VideoProtection";
@@ -50,10 +50,61 @@ function CustomVideoPlayer() {
 
 export default function FunkVideos() {
   const [isBlocked, setIsBlocked] = useState(false);
+  const [adBlockDetected, setAdBlockDetected] = useState(false);
 
   const handleViolationDetected = () => {
     setIsBlocked(true);
   };
+
+  const handleAdBlockDetected = () => {
+    setAdBlockDetected(true);
+  };
+
+  // Exibir tela de bloqueio de ad blocker
+  if (adBlockDetected) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <Header />
+        <main className="container mx-auto px-4 py-8">
+          <div className="text-center py-20">
+            <div className="mb-8">
+              <Ban className="w-24 h-24 mx-auto text-orange-500 mb-6" />
+              <AlertTriangle className="w-16 h-16 mx-auto text-yellow-500 mb-6" />
+            </div>
+            <h1 className="font-display font-bold text-4xl md:text-5xl mb-6 text-orange-500">
+              Ad Blocker Detectado
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+              Para manter nosso conteúdo gratuito, precisamos exibir anúncios de nossos parceiros.
+              Por favor, desabilite seu bloqueador de anúncios para continuar.
+            </p>
+            <div className="bg-card border border-border rounded-lg p-6 mb-8 max-w-xl mx-auto">
+              <h3 className="font-semibold text-lg mb-4">Como desabilitar:</h3>
+              <ul className="text-left space-y-2 text-muted-foreground">
+                <li>• Clique no ícone do ad blocker no navegador</li>
+                <li>• Selecione "Pausar no site" ou "Desabilitar"</li>
+                <li>• Recarregue a página</li>
+                <li>• Apoie criadores de conteúdo!</li>
+              </ul>
+            </div>
+            <div className="mb-6 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg">
+              <p className="text-sm text-muted-foreground">
+                💝 <strong>Obrigado!</strong> Sua visualização de anúncios nos ajuda a trazer mais conteúdo de qualidade.
+              </p>
+            </div>
+            <Button 
+              size="lg" 
+              onClick={() => window.location.reload()}
+              className="bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white"
+            >
+              Recarregar Página
+            </Button>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (isBlocked) {
     return (
@@ -95,7 +146,10 @@ export default function FunkVideos() {
   }
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <VideoProtection onViolationDetected={handleViolationDetected} />
+      <VideoProtection 
+        onViolationDetected={handleViolationDetected}
+        onAdBlockDetected={handleAdBlockDetected}
+      />
       <Header />
       
       <main className="container mx-auto px-4 py-8">

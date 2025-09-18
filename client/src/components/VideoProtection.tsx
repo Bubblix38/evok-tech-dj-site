@@ -2,11 +2,90 @@ import { useEffect } from 'react';
 
 interface VideoProtectionProps {
   onViolationDetected?: () => void;
+  onAdBlockDetected?: () => void;
 }
 
-export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
+export function VideoProtection({ onViolationDetected, onAdBlockDetected }: VideoProtectionProps) {
   useEffect(() => {
-    // 1. Detectar IDM pelos atributos que ele adiciona
+    // 1. Detectar Ad Blockers (com menos falsos positivos)
+    const detectAdBlocker = (): Promise<boolean> => {
+      return new Promise((resolve) => {
+        // Aguardar mais tempo para evitar detecções falsas no carregamento
+        setTimeout(() => {
+          let detectionScore = 0;
+          const tests = [];
+          
+          // Teste 1: Elemento fake de anúncio
+          const test1 = new Promise<number>((resolveTest) => {
+            const adElement = document.createElement('div');
+            adElement.innerHTML = '&nbsp;';
+            adElement.className = 'adsbox';
+            adElement.style.cssText = `
+              position: absolute !important;
+              top: -1px !important;
+              left: -1px !important;
+              width: 1px !important;
+              height: 1px !important;
+              visibility: hidden !important;
+            `;
+            
+            document.body.appendChild(adElement);
+            
+            setTimeout(() => {
+              const isBlocked = adElement.offsetHeight === 0 || 
+                               adElement.offsetWidth === 0;
+              document.body.removeChild(adElement);
+              resolveTest(isBlocked ? 1 : 0);
+            }, 200);
+          });
+          
+          // Teste 2: Verificar lista de bloqueadores conhecidos
+          const test2 = new Promise<number>((resolveTest) => {
+            const knownBlockers = [
+              'uBlock', 'AdBlock', 'Adblock', 'AdGuard', 'Ghostery'
+            ];
+            
+            let found = 0;
+            knownBlockers.forEach(blocker => {
+              if (window.hasOwnProperty(blocker.toLowerCase()) ||
+                  document.querySelector(`[class*="${blocker.toLowerCase()}"]`) ||
+                  navigator.userAgent.includes(blocker)) {
+                found++;
+              }
+            });
+            
+            resolveTest(found > 0 ? 1 : 0);
+          });
+          
+          // Teste 3: Verificar modificações específicas de ad blockers
+          const test3 = new Promise<number>((resolveTest) => {
+            const testDiv = document.createElement('div');
+            testDiv.innerHTML = 'advertisement';
+            testDiv.style.display = 'none';
+            document.body.appendChild(testDiv);
+            
+            setTimeout(() => {
+              const computed = window.getComputedStyle(testDiv);
+              const isHidden = computed.display === 'none' && 
+                              testDiv.offsetHeight === 0;
+              document.body.removeChild(testDiv);
+              resolveTest(isHidden ? 0 : 1); // Se não foi escondido, pode ter ad blocker
+            }, 100);
+          });
+          
+          tests.push(test1, test2, test3);
+          
+          Promise.all(tests).then((scores) => {
+            const totalScore = scores.reduce((a, b) => a + b, 0);
+            // Só considera ad blocker se pelo menos 2 testes derem positivo
+            resolve(totalScore >= 2);
+          });
+          
+        }, 3000); // Aguardar 3 segundos antes de começar os testes
+      });
+    };
+
+    // 2. Detectar IDM pelos atributos que ele adiciona
     const checkForIDM = () => {
       const videos = document.getElementsByTagName('video');
       const iframes = document.getElementsByTagName('iframe');
@@ -34,7 +113,7 @@ export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
       return false;
     };
 
-    // 2. Detectar extensões de download por mudanças no DOM
+    // 3. Detectar extensões de download por mudanças no DOM
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
@@ -67,7 +146,7 @@ export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
       });
     });
 
-    // 3. Detectar DevTools (tentativa de inspecionar elementos)
+    // 4. Detectar DevTools (tentativa de inspecionar elementos)
     let devToolsOpen = false;
     const detectDevTools = () => {
       const threshold = 160;
@@ -84,7 +163,7 @@ export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
       }
     };
 
-    // 4. Bloquear tentativas de debug via console
+    // 5. Bloquear tentativas de debug via console
     const blockConsoleAccess = () => {
       const methods = ['log', 'error', 'warn', 'info', 'debug'];
       methods.forEach(method => {
@@ -92,7 +171,7 @@ export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
       });
     };
 
-    // 5. Proteção contra right-click e seleção
+    // 6. Proteção contra right-click e seleção
     const preventRightClick = (e: MouseEvent) => {
       e.preventDefault();
       return false;
@@ -117,6 +196,35 @@ export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
 
     // Iniciar proteções
     const startProtection = () => {
+      // Desabilitar detecção de ad blocker em desenvolvimento para evitar problemas
+      let adBlockTimeout: NodeJS.Timeout | null = null;
+      if (!import.meta.env.DEV) {
+        adBlockTimeout = setTimeout(() => {
+          detectAdBlocker().then((hasAdBlocker) => {
+            if (hasAdBlocker && onAdBlockDetected) {
+              onAdBlockDetected();
+            }
+          });
+        }, 8000); // Aguardar 8 segundos apenas em produção
+      }
+      
+      // Verificar ad blocker apenas em produção e com menos frequência
+      let adBlockCheckInterval: NodeJS.Timeout | null = null;
+      if (!import.meta.env.DEV) {
+        adBlockCheckInterval = setInterval(() => {
+          if (!sessionStorage.getItem('adBlockChecked')) {
+            detectAdBlocker().then((hasAdBlocker) => {
+              if (hasAdBlocker && onAdBlockDetected) {
+                sessionStorage.setItem('adBlockChecked', 'true');
+                onAdBlockDetected();
+                if (adBlockCheckInterval) clearInterval(adBlockCheckInterval);
+              }
+            });
+          } else {
+            if (adBlockCheckInterval) clearInterval(adBlockCheckInterval);
+          }
+        }, 120000); // Verificar a cada 2 minutos apenas em produção
+      }
       // Verificar IDM periodicamente
       const idmCheckInterval = setInterval(() => {
         if (checkForIDM()) {
@@ -152,6 +260,8 @@ export function VideoProtection({ onViolationDetected }: VideoProtectionProps) {
       // Limpeza quando o componente for desmontado
       return () => {
         clearInterval(idmCheckInterval);
+        if (adBlockCheckInterval) clearInterval(adBlockCheckInterval);
+        if (adBlockTimeout) clearTimeout(adBlockTimeout);
         observer.disconnect();
         document.removeEventListener('contextmenu', preventRightClick);
         document.removeEventListener('selectstart', preventSelection);
