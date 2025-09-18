@@ -76,16 +76,12 @@ export default function FunkVideos() {
                 Exclusive funk performance with high-energy beats and remixes
               </p>
               <Button 
-                variant="outline" 
+                variant="default" 
                 size="sm" 
-                className="w-full" 
-                onClick={() => {
-                  const url = 'https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=sharing&t=1m27s';
-                  window.open(url, '_blank', 'noopener,noreferrer');
-                }}
+                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90" 
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch Full Screen
+                Comprar Pacote Exclusivo
               </Button>
             </div>
           </div>
@@ -106,7 +102,7 @@ export default function FunkVideos() {
               </p>
               <Button variant="outline" size="sm" className="w-full">
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch on YouTube
+                Comprar Pacote de Vídeos
               </Button>
             </div>
           </div>
@@ -127,7 +123,7 @@ export default function FunkVideos() {
               </p>
               <Button variant="outline" size="sm" className="w-full">
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch on YouTube
+                Comprar Pacote de Vídeos
               </Button>
             </div>
           </div>
@@ -148,7 +144,7 @@ export default function FunkVideos() {
               </p>
               <Button variant="outline" size="sm" className="w-full">
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch on YouTube
+                Comprar Pacote de Vídeos
               </Button>
             </div>
           </div>
@@ -169,7 +165,7 @@ export default function FunkVideos() {
               </p>
               <Button variant="outline" size="sm" className="w-full">
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch on YouTube
+                Comprar Pacote de Vídeos
               </Button>
             </div>
           </div>
@@ -190,7 +186,7 @@ export default function FunkVideos() {
               </p>
               <Button variant="outline" size="sm" className="w-full">
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch on YouTube
+                Comprar Pacote de Vídeos
               </Button>
             </div>
           </div>
@@ -199,15 +195,20 @@ export default function FunkVideos() {
         {/* Call to Action */}
         <div className="text-center py-12 mt-12">
           <h2 className="font-display font-bold text-3xl mb-4">
-            Stay Updated
+            Quer Mais Conteúdo?
           </h2>
           <p className="text-muted-foreground text-lg mb-6 max-w-xl mx-auto">
-            Subscribe to our YouTube channel for the latest funk videos and tutorials
+            Assista gratuitamente nossos vídeos aqui no site ou adquira o pacote completo com acesso exclusivo
           </p>
-          <Button size="lg" variant="default">
-            <ExternalLink className="w-5 h-5 mr-2" />
-            Visit YouTube Channel
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" variant="outline">
+              Continuar Assistindo Grátis
+            </Button>
+            <Button size="lg" variant="default" className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
+              <ExternalLink className="w-5 h-5 mr-2" />
+              Comprar Pacote Completo
+            </Button>
+          </div>
         </div>
       </main>
 
