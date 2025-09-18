@@ -145,7 +145,7 @@ export class MemStorage implements IStorage {
         genre: "Electronic",
         size: "130 MB",
         releaseDate: "2024-12-10",
-        featured: true,
+        featured: false,
         audioPreviewUrl: "/assets/audio/electronic-preview.mp3",
         downloadUrl: "/assets/packs/electronic-vibes.zip"
       }
