@@ -75,7 +75,15 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Exclusive funk performance with high-energy beats and remixes
               </p>
-              <Button variant="outline" size="sm" className="w-full" onClick={() => window.open('https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=drive_link', '_blank')}>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full" 
+                onClick={() => {
+                  const url = 'https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=sharing&t=1m27s';
+                  window.open(url, '_blank', 'noopener,noreferrer');
+                }}
+              >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Watch Full Screen
               </Button>
