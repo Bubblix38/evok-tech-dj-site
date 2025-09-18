@@ -93,7 +93,7 @@ export class MemStorage implements IStorage {
         genre: "Dance-Pop",
         size: "85 MB",
         releaseDate: "2025-01-03",
-        featured: false,
+        featured: true,
         audioPreviewUrl: "/assets/audio/dance-pop-preview.mp3",
         downloadUrl: "/assets/packs/dance-pop.zip"
       },
@@ -106,9 +106,48 @@ export class MemStorage implements IStorage {
         genre: "Remix/Retro",
         size: "125 MB",
         releaseDate: "2024-12-28",
-        featured: false,
+        featured: true,
         audioPreviewUrl: "/assets/audio/evok-tech-2nd-preview.mp3",
         downloadUrl: "/assets/packs/evok-tech-2nd.zip"
+      },
+      {
+        title: "Carnival 2025 - Carnaval Pack",
+        artist: "EVOK TECH DJ",
+        coverUrl: "/assets/generated_images/90s_remix_pack_cover_cf424b48.png",
+        duration: "43:20",
+        tracks: 13,
+        genre: "Carnival/Latin",
+        size: "115 MB",
+        releaseDate: "2024-12-20",
+        featured: true,
+        audioPreviewUrl: "/assets/audio/carnival-preview.mp3",
+        downloadUrl: "/assets/packs/carnival-2025.zip"
+      },
+      {
+        title: "Countdown 2025",
+        artist: "EVOK TECH DJ",
+        coverUrl: "/assets/generated_images/90s_remix_pack_cover_cf424b48.png",
+        duration: "39:45",
+        tracks: 12,
+        genre: "Party/Dance",
+        size: "105 MB",
+        releaseDate: "2024-12-15",
+        featured: true,
+        audioPreviewUrl: "/assets/audio/countdown-preview.mp3",
+        downloadUrl: "/assets/packs/countdown-2025.zip"
+      },
+      {
+        title: "Electronic Vibes 2025",
+        artist: "EVOK TECH DJ",
+        coverUrl: "/assets/generated_images/90s_remix_pack_cover_cf424b48.png",
+        duration: "46:30",
+        tracks: 15,
+        genre: "Electronic",
+        size: "130 MB",
+        releaseDate: "2024-12-10",
+        featured: true,
+        audioPreviewUrl: "/assets/audio/electronic-preview.mp3",
+        downloadUrl: "/assets/packs/electronic-vibes.zip"
       }
     ];
 
