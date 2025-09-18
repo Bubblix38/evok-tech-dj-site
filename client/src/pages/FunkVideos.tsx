@@ -75,14 +75,6 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Exclusive funk performance with high-energy beats and remixes
               </p>
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90" 
-              >
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Comprar Pacote Exclusivo
-              </Button>
             </div>
           </div>
 
@@ -100,10 +92,7 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Studio session creating the "Latin Fusion" pack
               </p>
-              <Button variant="outline" size="sm" className="w-full">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Comprar Pacote de Vídeos
-              </Button>
+
             </div>
           </div>
 
@@ -121,10 +110,7 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Creating the perfect carnival atmosphere with funk beats
               </p>
-              <Button variant="outline" size="sm" className="w-full">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Comprar Pacote de Vídeos
-              </Button>
+
             </div>
           </div>
 
@@ -142,10 +128,7 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Learn the techniques behind tribal funk fusion
               </p>
-              <Button variant="outline" size="sm" className="w-full">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Comprar Pacote de Vídeos
-              </Button>
+
             </div>
           </div>
 
@@ -163,10 +146,7 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 High-energy funky house session from the studio
               </p>
-              <Button variant="outline" size="sm" className="w-full">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Comprar Pacote de Vídeos
-              </Button>
+
             </div>
           </div>
 
@@ -184,10 +164,7 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Tour of the EVOK TECH DJ studio setup and gear
               </p>
-              <Button variant="outline" size="sm" className="w-full">
-                <ExternalLink className="w-4 h-4 mr-2" />
-                Comprar Pacote de Vídeos
-              </Button>
+
             </div>
           </div>
         </div>
@@ -195,20 +172,11 @@ export default function FunkVideos() {
         {/* Call to Action */}
         <div className="text-center py-12 mt-12">
           <h2 className="font-display font-bold text-3xl mb-4">
-            Quer Mais Conteúdo?
+            Mais Vídeos em Breve
           </h2>
           <p className="text-muted-foreground text-lg mb-6 max-w-xl mx-auto">
-            Assista gratuitamente nossos vídeos aqui no site ou adquira o pacote completo com acesso exclusivo
+            Estamos preparando mais conteúdo exclusivo de funk para você. Volte em breve para conferir!
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="outline">
-              Continuar Assistindo Grátis
-            </Button>
-            <Button size="lg" variant="default" className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90">
-              <ExternalLink className="w-5 h-5 mr-2" />
-              Comprar Pacote Completo
-            </Button>
-          </div>
         </div>
       </main>
 
