@@ -67,7 +67,7 @@ export class MemStorage implements IStorage {
         genre: "Tribal/House",
         size: "110 MB",
         releaseDate: "2025-01-08",
-        featured: false,
+        featured: true,
         audioPreviewUrl: "/assets/audio/tribal-fusion-preview.mp3",
         downloadUrl: "/assets/packs/tribal-fusion.zip"
       },
@@ -80,7 +80,7 @@ export class MemStorage implements IStorage {
         genre: "Funky House",
         size: "140 MB",
         releaseDate: "2025-01-05",
-        featured: false,
+        featured: true,
         audioPreviewUrl: "/assets/audio/funky-house-preview.mp3",
         downloadUrl: "/assets/packs/funky-house.zip"
       },
