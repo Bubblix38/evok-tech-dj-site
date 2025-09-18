@@ -23,10 +23,14 @@ export default function FunkVideos() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Video Card 1 */}
           <div className="group hover-elevate rounded-lg overflow-hidden bg-card border border-border">
-            <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 relative flex items-center justify-center">
-              <Button size="icon" variant="outline" className="w-16 h-16 rounded-full">
-                <Play className="w-6 h-6" />
-              </Button>
+            <div className="aspect-video relative">
+              <iframe
+                src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview"
+                className="w-full h-full rounded-t-lg"
+                allow="autoplay"
+                allowFullScreen
+                title="Evok Tech DJ - Live Set 2025"
+              />
             </div>
             <div className="p-6">
               <h3 className="font-display font-semibold text-lg mb-2">
@@ -35,9 +39,9 @@ export default function FunkVideos() {
               <p className="text-muted-foreground text-sm mb-4">
                 Exclusive live performance featuring the latest funk remixes
               </p>
-              <Button variant="outline" size="sm" className="w-full">
+              <Button variant="outline" size="sm" className="w-full" onClick={() => window.open('https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=drive_link', '_blank')}>
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Watch on YouTube
+                Watch Full Screen
               </Button>
             </div>
           </div>
