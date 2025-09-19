@@ -466,6 +466,41 @@
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 
+  /* Radio player volume slider styles */
+  .volume-slider {
+    background: linear-gradient(to right, 
+      #facc15 0%, 
+      #f97316 var(--volume, 70%), 
+      #7c3aed var(--volume, 70%)
+    );
+  }
+
+  .volume-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #facc15, #f97316);
+    cursor: pointer;
+    border: 2px solid #581c87;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .volume-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #facc15, #f97316);
+    cursor: pointer;
+    border: 2px solid #581c87;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
   /* Disable effects for reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .disco-spinning,

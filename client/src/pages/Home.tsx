@@ -6,6 +6,7 @@ import AudioPlayer from "../components/AudioPlayer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
 import BackgroundFX from "../components/BackgroundFX";
+import RadioPlayer from "../components/RadioPlayer";
 import { useMusicPacks, useFeaturedPacks, downloadMusicPack } from "../hooks/useMusicPacks";
 import { type MusicPack } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
@@ -93,6 +94,26 @@ export default function Home() {
             onPlayPreview={handleHeroPreview}
             onDownload={handleHeroDownload}
           />
+
+          {/* Live Radio Section */}
+          <section className="py-12 bg-gradient-to-r from-purple-900/20 via-purple-800/20 to-purple-900/20">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-8">
+                <h2 className="font-display font-bold text-3xl md:text-4xl mb-4 text-foreground">
+                  <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
+                    LIVE RADIO
+                  </span>
+                </h2>
+                <p className="text-muted-foreground font-body text-lg max-w-2xl mx-auto">
+                  Escute as melhores mixagens ao vivo direto do Breakz.FM - Hip-Hop, EDM e muito mais!
+                </p>
+              </div>
+              
+              <div className="max-w-md mx-auto">
+                <RadioPlayer />
+              </div>
+            </div>
+          </section>
 
           {featuredPacksError ? (
             <div className="py-12 text-center">
