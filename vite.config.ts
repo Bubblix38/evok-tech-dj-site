@@ -50,18 +50,11 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: process.env.NODE_ENV === 'production' ? ['react', 'react-dom'] : [],
       output: {
-        manualChunks: process.env.NODE_ENV === 'production' ? {
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
-        } : {
+        manualChunks: {
           vendor: ['react', 'react-dom'],
           ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
         },
-        globals: process.env.NODE_ENV === 'production' ? {
-          'react': 'React',
-          'react-dom': 'ReactDOM'
-        } : {},
       },
     },
     cssMinify: true,
