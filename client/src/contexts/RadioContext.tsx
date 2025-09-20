@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useState, useRef, useEffect, ReactNode } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/queryClient';
+import { mockRadioData } from '@/data/mockData';
+
+// Check if we're in a static environment (no backend APIs available)
+const isStaticEnvironment = () => {
+  return typeof window !== 'undefined' && window.location.hostname.includes('vercel.app');
+};
 
 interface NowPlayingTrack {
   title: string;
@@ -110,6 +117,28 @@ export function RadioProvider({ children }: RadioProviderProps) {
   // Fetch current playing track metadata
   const { data: nowPlaying, refetch: refetchNowPlaying } = useQuery<NowPlayingTrack>({
     queryKey: ['/api/radio/now-playing'],
+    queryFn: async () => {
+      if (isStaticEnvironment()) {
+        // Return mock data for static environment
+        return {
+          title: mockRadioData.currentTrack.title,
+          artist: mockRadioData.currentTrack.artist,
+          coverUrl: mockRadioData.currentTrack.coverUrl
+        };
+      }
+      // Try API first, fallback to mock data
+      try {
+        const response = await fetch('/api/radio/now-playing');
+        if (!response.ok) throw new Error('API not available');
+        return await response.json();
+      } catch {
+        return {
+          title: mockRadioData.currentTrack.title,
+          artist: mockRadioData.currentTrack.artist,
+          coverUrl: mockRadioData.currentTrack.coverUrl
+        };
+      }
+    },
     refetchInterval: 30000, // Refetch every 30 seconds
     enabled: isPlaying, // Only fetch when radio is playing
   });
@@ -117,19 +146,31 @@ export function RadioProvider({ children }: RadioProviderProps) {
   // Download mutation
   const downloadMutation = useMutation<DownloadResponse, Error, { title: string; artist: string }>({
     mutationFn: async ({ title, artist }) => {
-      const response = await fetch('/api/radio/download-current', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ title, artist })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to get download links');
+      if (isStaticEnvironment()) {
+        // In static environment, show contact message
+        alert('Para fazer download das músicas, entre em contato via WhatsApp!');
+        throw new Error('Download not available in static mode');
       }
       
-      return response.json();
+      try {
+        const response = await fetch('/api/radio/download-current', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ title, artist })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to get download links');
+        }
+        
+        return response.json();
+      } catch (error) {
+        // Fallback message for any download error
+        alert('Para fazer download das músicas, entre em contato via WhatsApp!');
+        throw error;
+      }
     },
   });
 
