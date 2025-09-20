@@ -2,11 +2,13 @@ import { useState } from "react";
 import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import PackGrid from "../components/PackGrid";
+import FeaturedPacksCarousel from "../components/FeaturedPacksCarousel";
+import BestSellersSection from "../components/BestSellersSection";
 import AudioPlayer from "../components/AudioPlayer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
 import BackgroundFX from "../components/BackgroundFX";
-import RadioPlayer from "../components/RadioPlayer";
+import GlobalRadioPlayer from "../components/GlobalRadioPlayer";
 import { useMusicPacks, useFeaturedPacks, downloadMusicPack } from "../hooks/useMusicPacks";
 import { type MusicPack } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
@@ -95,26 +97,8 @@ export default function Home() {
             onDownload={handleHeroDownload}
           />
 
-          {/* Live Radio Section */}
-          <section className="py-12 bg-gradient-to-r from-purple-900/20 via-purple-800/20 to-purple-900/20">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-8">
-                <h2 className="font-display font-bold text-3xl md:text-4xl mb-4 text-foreground">
-                  <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">
-                    LIVE RADIO
-                  </span>
-                </h2>
-                <p className="text-muted-foreground font-body text-lg max-w-2xl mx-auto">
-                  Escute as melhores mixagens ao vivo direto do Breakz.FM - Hip-Hop, EDM e muito mais!
-                </p>
-              </div>
-              
-              <div className="max-w-md mx-auto">
-                <RadioPlayer />
-              </div>
-            </div>
-          </section>
-
+          {/* Live Radio Section - Removed since it's now in header */}
+          
           {featuredPacksError ? (
             <div className="py-12 text-center">
               <div className="text-muted-foreground font-body">Failed to load featured packs. Please refresh the page.</div>
@@ -124,16 +108,23 @@ export default function Home() {
               <div className="text-muted-foreground font-body">Loading featured packs...</div>
             </div>
           ) : (
-            <PackGrid 
+            <FeaturedPacksCarousel 
               packs={featuredPacks}
-              title="Featured Packs"
-              subtitle="Our most popular remix collections and latest releases"
               onPackPlay={handlePackPlay}
               onPackDownload={handlePackDownload}
               onPackClick={handlePackClick}
             />
           )}
 
+          {/* Best Sellers Section */}
+          <BestSellersSection 
+            packs={featuredPacks}
+            onPackPlay={handlePackPlay}
+            onPackDownload={handlePackDownload}
+            onPackClick={handlePackClick}
+          />
+
+          {/* Radio Online Section - Removed since it's now in header */}
 
           {/* Coming Soon Section */}
           <section className="py-12 bg-muted/30">
@@ -157,6 +148,8 @@ export default function Home() {
           onPrevious={() => console.log("Previous track")}
           onClose={() => setIsPlayerVisible(false)}
         />
+
+        <GlobalRadioPlayer className="fixed" />
 
         <WhatsAppButton 
           phoneNumber="59895905365"

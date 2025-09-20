@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Play, Download, Clock } from "lucide-react";
 import { type MusicPack } from "@shared/schema";
 import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
+import LazyImage from "./LazyImage";
 
 interface MusicPackCardProps {
   pack: MusicPack;
@@ -28,10 +29,11 @@ export default function MusicPackCard({ pack, onPlay, onDownload, onClick }: Mus
         className="aspect-square w-full bg-gradient-to-br from-primary/20 to-chart-3/20 relative overflow-hidden"
         onClick={() => onClick?.(pack.id)}
       >
-        <img 
+        <LazyImage 
           src={pack.coverUrl || packCover} 
           alt={pack.title}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          placeholder="Carregando..."
           data-testid={`img-pack-cover-${pack.id}`}
         />
         

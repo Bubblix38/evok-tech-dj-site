@@ -1,28 +1,55 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import GlobalRadioPlayer from "@/components/GlobalRadioPlayer";
 import { Button } from "@/components/ui/button";
 import { Play, ExternalLink, Shield, AlertTriangle, Ban } from "lucide-react";
 import { useState } from "react";
 import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
 import VideoProtection from "@/components/VideoProtection";
 import BackgroundFX from "@/components/BackgroundFX";
-import LocalhostInfo from "@/components/LocalhostInfo";
+
 import { isDevelopmentMode } from "../utils/environment";
 
 function CustomVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [loadError, setLoadError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
   // Detectar ambiente local usando utilitário
   const isLocalhost = isDevelopmentMode();
   
   const handlePlay = () => {
     setIsPlaying(true);
+    setIsLoading(true);
+    setLoadError(false);
   };
   
-  const handleIframeError = () => {
+  const handleIframeError = (error: any) => {
+    console.error('❌ Erro ao carregar iframe do Google Drive:', error);
+    console.error('🔗 URL que falhou:', 'https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?usp=sharing');
+    console.error('🔗 Link alternativo:', 'https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=sharing');
+    console.error('⚠️ Possíveis causas: permissões, tipo de arquivo, CORS, ou configurações de segurança');
+    console.error('🛡️ Sandbox atual:', 'allow-scripts allow-same-origin allow-presentation allow-forms allow-popups allow-top-navigation');
+    
+    // Tentar detectar o tipo específico de erro
+    if (error && error.target) {
+      console.error('🔍 Detalhes do erro:', {
+        src: error.target.src,
+        readyState: error.target.readyState,
+        contentDocument: error.target.contentDocument
+      });
+    }
+    
     setLoadError(true);
-    console.log('Erro ao carregar video do Google Drive');
+    setIsLoading(false);
+  };
+
+  const handleIframeLoad = () => {
+    console.log('✅ Iframe carregado com sucesso');
+    console.log('🔗 URL do vídeo:', 'https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?usp=sharing');
+    console.log('🔗 Link de visualização:', 'https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view?usp=sharing');
+    console.log('🛡️ Sandbox:', 'allow-scripts allow-same-origin allow-presentation allow-forms allow-popups allow-top-navigation');
+    setIsLoading(false);
   };
 
   if (isPlaying) {
@@ -32,15 +59,15 @@ function CustomVideoPlayer() {
         <div className="aspect-video relative bg-gradient-to-br from-purple-900 via-pink-900 to-orange-900 rounded-t-lg" data-testid="demo-player">
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8">
             <Play className="w-20 h-20 mb-4 text-yellow-400 animate-pulse" fill="currentColor" data-testid="button-play" />
-            <h3 className="text-2xl font-bold mb-4 text-center">Video Indisponivel</h3>
+            <h3 className="text-2xl font-bold mb-4 text-center">Vídeo Indisponível</h3>
             <p className="text-center text-lg mb-4 max-w-md">
               <strong>"A Caminho da Treta"</strong><br/>
               Noobreak, Douth! & DFranco
             </p>
             <p className="text-sm text-gray-300 text-center max-w-lg">
-              Erro ao carregar o video. Tente novamente mais tarde.
+              Erro ao carregar o vídeo. Tente novamente mais tarde.
               {isLocalhost && <br/>}
-              {isLocalhost && "Modo desenvolvimento: Este seria o video completo em producao."}
+              {isLocalhost && "Modo desenvolvimento: Este seria o vídeo completo em produção."}
             </p>
             <div className="mt-6 w-full bg-gray-700 rounded-full h-2">
               <div className="bg-gradient-to-r from-yellow-400 to-pink-500 h-2 rounded-full animate-pulse" style={{width: '35%'}}></div>
@@ -49,25 +76,79 @@ function CustomVideoPlayer() {
               <span>1:32 / 4:23</span>
               <span>Volume: 85%</span>
             </div>
+            <div className="mb-4">
+              <p className="text-sm text-yellow-300 mb-2">Tente assistir diretamente no Google Drive:</p>
+              <div className="flex flex-col gap-2">
+                <a 
+                  href="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/view"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors text-center"
+                >
+                  🔗 Abrir no Google Drive
+                </a>
+                <a 
+                  href="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm transition-colors text-center"
+                >
+                  🎥 Preview Direto
+                </a>
+                <button
+                  onClick={() => window.open('https://drive.google.com/uc?export=download&id=1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H', '_blank')}
+                  className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm transition-colors text-center"
+                >
+                  📥 Download Direto
+                </button>
+              </div>
+            </div>
+            <Button 
+              onClick={() => {
+                setLoadError(false);
+                setIsPlaying(false);
+              }}
+              className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-black"
+            >
+              Tentar Novamente
+            </Button>
           </div>
         </div>
       );
     }
-    
+
+    // Mostrar loading enquanto carrega
+    if (isLoading) {
+      return (
+        <div className="aspect-video relative bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 rounded-t-lg">
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8">
+            <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <h3 className="text-xl font-bold mb-2 text-center">Carregando Vídeo...</h3>
+            <p className="text-center text-sm text-gray-300">
+              "A Caminho da Treta" - Noobreak, Douth! & DFranco
+            </p>
+          </div>
+        </div>
+      );
+    }
+
     // Tentar carregar o iframe real do Google Drive
     return (
       <div className="aspect-video relative">
         <iframe
-          src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview?t=1m27s&autoplay=1"
+          src="https://drive.google.com/file/d/1RbaasiiOmz-ICexLt2sLvNd6Q8Icrw9H/preview"
           className="w-full h-full rounded-t-lg"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
           allowFullScreen
           title="A Caminho da Treta - Noobreak, Douth! & DFranco"
           width="100%"
           height="100%"
           frameBorder="0"
-          loading="lazy"
+          loading="eager"
+          referrerPolicy="strict-origin-when-cross-origin"
+          sandbox="allow-scripts allow-same-origin allow-presentation allow-forms allow-popups allow-top-navigation allow-downloads allow-modals"
           onError={handleIframeError}
+          onLoad={handleIframeLoad}
         />
       </div>
     );
@@ -208,15 +289,13 @@ export default function FunkVideos() {
         />
       )}
       
-      {/* Informações de desenvolvimento local */}
-      <LocalhostInfo isLocalhost={isLocalhost} />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <div className="text-center py-12 mb-12">
           <h1 className="font-display font-bold text-4xl md:text-5xl lg:text-6xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-6">
-            Funk Videos
+            Vídeos
           </h1>
           <p className="text-xl text-muted-foreground font-body max-w-2xl mx-auto leading-relaxed">
             Explore our collection of exclusive funk music videos and performances from EVOK TECH DJ
@@ -341,6 +420,8 @@ export default function FunkVideos() {
       </main>
 
       <Footer />
+      
+      <GlobalRadioPlayer className="fixed" />
     </div>
   );
 }

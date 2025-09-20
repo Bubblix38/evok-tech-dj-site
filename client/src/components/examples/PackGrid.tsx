@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PackGrid from "../PackGrid";
-import { type MusicPack } from "../MusicPackCard";
+import { type MusicPack } from "@shared/schema";
 import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
 
 export default function PackGridExample() {
@@ -18,7 +18,11 @@ export default function PackGridExample() {
       genre: "Remix/House",
       size: "120 MB",
       releaseDate: "2025-01-15",
-      featured: true
+      featured: true,
+      audioPreviewUrl: null,
+      downloadUrl: null,
+      createdAt: null,
+      updatedAt: null
     },
     {
       id: "latin-fusion",
@@ -30,7 +34,11 @@ export default function PackGridExample() {
       genre: "Latin/Fusion",
       size: "95 MB",
       releaseDate: "2025-01-10",
-      featured: false
+      featured: false,
+      audioPreviewUrl: null,
+      downloadUrl: null,
+      createdAt: null,
+      updatedAt: null
     },
     {
       id: "tribal-fusion",
@@ -41,7 +49,12 @@ export default function PackGridExample() {
       tracks: 14,
       genre: "Tribal/House",
       size: "110 MB",
-      releaseDate: "2025-01-08"
+      releaseDate: "2025-01-08",
+      featured: null,
+      audioPreviewUrl: null,
+      downloadUrl: null,
+      createdAt: null,
+      updatedAt: null
     },
     {
       id: "funky-house",
@@ -52,7 +65,12 @@ export default function PackGridExample() {
       tracks: 18,
       genre: "Funky House",
       size: "140 MB",
-      releaseDate: "2025-01-05"
+      releaseDate: "2025-01-05",
+      featured: null,
+      audioPreviewUrl: null,
+      downloadUrl: null,
+      createdAt: null,
+      updatedAt: null
     },
     {
       id: "dance-pop",
@@ -63,7 +81,12 @@ export default function PackGridExample() {
       tracks: 11,
       genre: "Dance-Pop",
       size: "85 MB",
-      releaseDate: "2025-01-03"
+      releaseDate: "2025-01-03",
+      featured: null,
+      audioPreviewUrl: null,
+      downloadUrl: null,
+      createdAt: null,
+      updatedAt: null
     },
     {
       id: "80s-remix",
@@ -74,7 +97,12 @@ export default function PackGridExample() {
       tracks: 16,
       genre: "Remix/Retro",
       size: "125 MB",
-      releaseDate: "2024-12-28"
+      releaseDate: "2024-12-28",
+      featured: null,
+      audioPreviewUrl: null,
+      downloadUrl: null,
+      createdAt: null,
+      updatedAt: null
     }
   ];
   

@@ -2,6 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+import viteImagemin from "vite-plugin-imagemin";
+import imageminMozjpeg from "imagemin-mozjpeg";
+import imageminPngquant from "imagemin-pngquant";
+import imageminSvgo from "imagemin-svgo";
 
 export default defineConfig({
   plugins: [
@@ -15,6 +19,17 @@ export default defineConfig({
           ),
         ]
       : []),
+    viteImagemin({
+      gifsicle: { optimizationLevel: 7 },
+      mozjpeg: { quality: 80 },
+      pngquant: { quality: [0.65, 0.8] },
+      svgo: {
+        plugins: [
+          { name: 'removeViewBox', active: false },
+          { name: 'removeEmptyAttrs', active: false },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: {
@@ -27,6 +42,29 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    rollupOptions: {
+      external: process.env.NODE_ENV === 'production' ? ['react', 'react-dom'] : [],
+      output: {
+        manualChunks: process.env.NODE_ENV === 'production' ? {
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
+        } : {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-toast', '@radix-ui/react-tooltip'],
+        },
+        globals: process.env.NODE_ENV === 'production' ? {
+          'react': 'React',
+          'react-dom': 'ReactDOM'
+        } : {},
+      },
+    },
+    cssMinify: true,
   },
   server: {
     fs: {

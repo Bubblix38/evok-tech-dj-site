@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume2, VolumeX, Radio, Music, Download, ExternalLink } from 'lucide-react';
+import { Play, Pause, Volume1, Volume2, VolumeX, Radio, Music, Download, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
+import { useRadio } from '@/contexts/RadioContext';
 
 interface RadioPlayerProps {
   className?: string;
@@ -35,7 +36,24 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
   const [volume, setVolume] = useState(0.7);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState('Breakz.FM - Live DJ Mixes');
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+
+  // Simulação de músicas reais do EVOK.FM
+  const breakzFmTracks = [
+    { title: "Burn (Craig Knight & Lewis Roper Remix)", artist: "Usher", duration: 180 },
+    { title: "One In A Million", artist: "Bebe Rexha & David Guetta", duration: 240 },
+    { title: "Won't Be Possible", artist: "Tiësto, Odd Mob, Goodboys", duration: 320 },
+    { title: "Drinkin'", artist: "Joel Corry, MK & Rita Ora", duration: 200 },
+    { title: "Sing Hallelujah (Dakaos & Calin Remix)", artist: "Dr. Alban", duration: 245 },
+    { title: "Rainfall (Praise You)", artist: "Tom Santa", duration: 185 },
+    { title: "Rain In Ibiza", artist: "Felix Jaehn & The Stickmen Project feat. Calum Scott", duration: 270 },
+    { title: "Midnight (The Hanging Tree)", artist: "HOSH & 1979 feat. Jalja", duration: 215 },
+    { title: "It's Not Right But It's Okay", artist: "Felix Jaehn, Whitney Houston", duration: 390 },
+    { title: "Aire", artist: "Steve Aoki, Farruko", duration: 300 }
+  ];
+
+  const currentTrack = breakzFmTracks[currentTrackIndex];
+  const [currentTrackName, setCurrentTrackName] = useState('EVOK.FM - Live DJ Mixes');
   const [error, setError] = useState<string | null>(null);
   
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -67,13 +85,31 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
     },
   });
 
-  // Initialize audio volume on mount
+  // Initialize audio volume on mount and setup track rotation
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
       audio.volume = volume;
+      // Prevent audio from restarting on scroll or page interactions
+      audio.preload = 'none';
     }
-  }, []);
+
+    // Simulate track changes every 30 seconds when playing
+    let trackInterval: NodeJS.Timeout;
+    if (isPlaying) {
+      trackInterval = setInterval(() => {
+        setCurrentTrackIndex((prevIndex) => 
+          (prevIndex + 1) % breakzFmTracks.length
+        );
+      }, 30000); // Change track every 30 seconds
+    }
+
+    return () => {
+      if (trackInterval) {
+        clearInterval(trackInterval);
+      }
+    };
+  }, [isPlaying, breakzFmTracks.length]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -95,19 +131,32 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
     const handleLoadedData = () => {
       setIsLoading(false);
     };
+    const handlePause = () => {
+      // Only update state if it wasn't manually paused
+      if (isPlaying && !audio.ended) {
+        setIsPlaying(false);
+      }
+    };
+    const handlePlay = () => {
+      setIsPlaying(true);
+    };
 
     audio.addEventListener('loadstart', handleLoadStart);
     audio.addEventListener('canplay', handleCanPlay);
     audio.addEventListener('error', handleError);
     audio.addEventListener('loadeddata', handleLoadedData);
+    audio.addEventListener('pause', handlePause);
+    audio.addEventListener('play', handlePlay);
 
     return () => {
       audio.removeEventListener('loadstart', handleLoadStart);
       audio.removeEventListener('canplay', handleCanPlay);
       audio.removeEventListener('error', handleError);
       audio.removeEventListener('loadeddata', handleLoadedData);
+      audio.removeEventListener('pause', handlePause);
+      audio.removeEventListener('play', handlePlay);
     };
-  }, []);
+  }, [isPlaying]);
 
   const togglePlay = async () => {
     const audio = audioRef.current;
@@ -120,18 +169,21 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
       if (isPlaying) {
         audio.pause();
         setIsPlaying(false);
+        setIsLoading(false);
       } else {
         setIsLoading(true);
         setError(null);
         
-        // Set the stream URL and load
-        audio.src = streamUrl;
-        audio.volume = isMuted ? 0 : volume;
-        audio.load();
+        // Only set src if it's not already set to avoid reloading
+        if (audio.src !== streamUrl) {
+          audio.src = streamUrl;
+          audio.volume = isMuted ? 0 : volume;
+          audio.load();
+        }
         
         await audio.play();
         setIsPlaying(true);
-        setCurrentTrack('Breakz.FM - Live DJ Mixes');
+        setCurrentTrackName('EVOK.FM - Live DJ Mixes');
         
         // Start fetching metadata when playing
         refetchNowPlaying();
@@ -171,7 +223,7 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
   };
 
   const handleDownload = async () => {
-    const track = nowPlaying || { title: 'Live DJ Mix', artist: 'Breakz.FM' };
+    const track = nowPlaying || { title: 'Live DJ Mix', artist: 'EVOK.FM' };
     
     try {
       const result = await downloadMutation.mutateAsync({
@@ -276,93 +328,82 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
   // Update current track display when metadata is available
   useEffect(() => {
     if (nowPlaying && isPlaying) {
-      setCurrentTrack(`${nowPlaying.artist} - ${nowPlaying.title}`);
+      setCurrentTrackName(`${nowPlaying.artist} - ${nowPlaying.title}`);
     }
   }, [nowPlaying, isPlaying]);
 
   return (
-    <div className={`bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 border border-purple-400/30 rounded-lg p-6 shadow-2xl ${className}`} data-testid="radio-player">
+    <div className={`${className.includes('fixed') ? 'fixed bottom-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-md border-t border-gray-700 shadow-2xl' : className || 'bg-gray-900/95 backdrop-blur-md border border-gray-700 rounded-lg shadow-2xl p-4'}`} data-testid="radio-player">
       <audio
         ref={audioRef}
         preload="none"
         crossOrigin="anonymous"
+        playsInline
+        controls={false}
+        autoPlay={false}
       />
       
-      {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
-          <Radio className="w-6 h-6 text-purple-900" />
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-yellow-400 font-orbitron">BREAKZ.FM</h3>
-          <p className="text-purple-200 text-sm">Live DJ Mixes • Hip-Hop • EDM</p>
-        </div>
-      </div>
-
-      {/* Current Track */}
-      <div className="bg-black/20 rounded-lg p-4 mb-4 border border-purple-400/20">
-        <div className="flex items-center gap-2 mb-2">
-          <Music className="w-4 h-4 text-yellow-400" />
-          <span className="text-purple-200 text-xs font-semibold">TOCANDO AGORA</span>
-        </div>
-        <p className="text-white font-medium text-sm">
-          {isPlaying ? currentTrack : 'Pronto para tocar'}
-        </p>
-        {error && (
-          <p className="text-red-400 text-xs mt-1">{error}</p>
-        )}
-      </div>
-
-      {/* Controls */}
-      <div className="flex items-center gap-4">
-        {/* Play/Pause Button */}
-        <Button
-          onClick={togglePlay}
-          disabled={isLoading}
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-300 hover:to-orange-400 text-purple-900 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-          data-testid="button-radio-toggle"
-        >
-          {isLoading ? (
-            <div className="w-6 h-6 border-2 border-purple-900 border-t-transparent rounded-full animate-spin" />
-          ) : isPlaying ? (
-            <Pause className="w-6 h-6" fill="currentColor" />
-          ) : (
-            <Play className="w-6 h-6 ml-0.5" fill="currentColor" />
-          )}
-        </Button>
-
-        {/* Download Button */}
-        <Button
-          onClick={handleDownload}
-          disabled={!isPlaying || downloadMutation.isPending}
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-400 hover:to-emerald-500 text-white transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
-          data-testid="button-radio-download"
-          title="Download current track in high quality"
-        >
-          {downloadMutation.isPending ? (
-            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          ) : (
-            <Download className="w-5 h-5" />
-          )}
-        </Button>
-
-        {/* Volume Controls */}
-        <div className="flex items-center gap-2 flex-1">
+      {/* Player horizontal na parte inferior como no site original */}
+      <div className="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto">
+        {/* Lado esquerdo: Botão Play + Info da música */}
+        <div className="flex items-center gap-4 flex-1 min-w-0">
+          {/* Botão de Play/Pause */}
           <Button
-            onClick={toggleMute}
-            variant="ghost"
-            size="icon"
-            className="text-purple-200 hover:text-yellow-400 transition-colors"
-            data-testid="button-radio-mute"
+            onClick={togglePlay}
+            disabled={isLoading}
+            className="w-12 h-12 rounded-full bg-white hover:bg-gray-100 text-gray-900 transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center p-0"
+            data-testid="button-radio-play"
           >
-            {isMuted || volume === 0 ? (
-              <VolumeX className="w-5 h-5" />
+            {isLoading ? (
+              <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+            ) : isPlaying ? (
+              <Pause className="w-5 h-5" />
             ) : (
-              <Volume2 className="w-5 h-5" />
+              <Play className="w-5 h-5 ml-0.5" />
             )}
           </Button>
-          
-          <div className="flex-1 max-w-32">
+
+          {/* Informações da música */}
+          <div className="flex items-center gap-3 min-w-0 flex-1">
+            <span className="font-semibold text-white">EVOK.FM</span>
+            {/* Status indicator ao lado do nome */}
+            <div className="flex items-center gap-2">
+              <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`} />
+              <span className="text-xs text-gray-400 font-medium">
+                {isLoading ? 'Verbindung...' : isPlaying ? 'LIVE' : 'Offline'}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Centro: Barra de progresso (simulada) */}
+        <div className="hidden md:flex items-center gap-3 flex-1 max-w-md mx-8">
+          <div className="w-full bg-gray-700 rounded-full h-1">
+            <div 
+              className="bg-orange-500 h-1 rounded-full transition-all duration-1000"
+              style={{ width: isPlaying ? '45%' : '0%' }}
+            />
+          </div>
+        </div>
+
+        {/* Lado direito: Controles */}
+        <div className="flex items-center gap-3">
+          {/* Controle de volume com slider */}
+          <div className="hidden md:flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleMute}
+              className="text-gray-400 hover:text-white hover:bg-gray-800 rounded-full w-8 h-8"
+            >
+              {isMuted || volume === 0 ? (
+                <VolumeX className="w-3 h-3" />
+              ) : volume < 0.5 ? (
+                <Volume1 className="w-3 h-3" />
+              ) : (
+                <Volume2 className="w-3 h-3" />
+              )}
+            </Button>
             <input
               type="range"
               min="0"
@@ -370,31 +411,39 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
               step="0.1"
               value={isMuted ? 0 : volume}
               onChange={handleVolumeChange}
-              style={{'--volume': `${(isMuted ? 0 : volume) * 100}%`} as React.CSSProperties}
-              className="w-full h-2 bg-purple-700 rounded-lg appearance-none cursor-pointer volume-slider"
-              data-testid="slider-radio-volume"
+              className="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              style={{
+                background: `linear-gradient(to right, #f97316 0%, #f97316 ${(isMuted ? 0 : volume) * 100}%, #374151 ${(isMuted ? 0 : volume) * 100}%, #374151 100%)`
+              }}
             />
           </div>
-          
-          <span className="text-purple-200 text-xs font-mono min-w-8">
-            {Math.round((isMuted ? 0 : volume) * 100)}%
-          </span>
+
+          {/* Controle de volume mobile (apenas botão) */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleMute}
+            className="md:hidden text-gray-400 hover:text-white hover:bg-gray-800 rounded-full w-10 h-10"
+          >
+            {isMuted || volume === 0 ? (
+              <VolumeX className="w-4 h-4" />
+            ) : volume < 0.5 ? (
+              <Volume1 className="w-4 h-4" />
+            ) : (
+              <Volume2 className="w-4 h-4" />
+            )}
+          </Button>
         </div>
       </div>
 
-      {/* Status Indicator */}
-      <div className="flex items-center justify-center mt-4 pt-4 border-t border-purple-400/20">
-        <div className={`w-2 h-2 rounded-full mr-2 ${
-          isLoading ? 'bg-yellow-400 animate-pulse' : 
-          isPlaying ? 'bg-green-400 animate-pulse' : 
-          error ? 'bg-red-500' : 'bg-gray-500'
-        }`} />
-        <span className="text-purple-200 text-xs">
-          {isLoading ? 'CONECTANDO...' : 
-           isPlaying ? 'AO VIVO' : 
-           error ? 'OFFLINE' : 'PRONTO'}
-        </span>
-      </div>
+      {/* Mensagem de erro se houver */}
+      {error && (
+        <div className="px-4 pb-2">
+          <p className="text-red-400 text-xs text-center">
+            {error}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

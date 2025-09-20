@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Play, Download } from "lucide-react";
-import heroBackground from "@assets/generated_images/90s_music_hero_background_d7797857.png";
-import RetroMusicEffects from "./RetroMusicEffects";
+import { Download, Play, ExternalLink } from "lucide-react";
+import { useState } from "react";
+import { getOptimizedImageUrl } from "@/utils/cdn-config";
+import BackgroundFX from "./BackgroundFX";
+import { useRadio } from "@/contexts/RadioContext";
 
 interface HeroSectionProps {
   onPlayPreview?: () => void;
@@ -9,18 +11,26 @@ interface HeroSectionProps {
 }
 
 export default function HeroSection({ onPlayPreview, onDownload }: HeroSectionProps) {
+  const { isPlaying, togglePlay } = useRadio();
+  
+  // Get optimized background image URL - using direct path for better compatibility
+  const optimizedBgUrl = getOptimizedImageUrl('90s_music_hero_background_d7797857.png', 1920);
+  
+  // Fallback image path for development
+  const fallbackBgUrl = '/attached_assets/generated_images/90s_music_hero_background_d7797857.png';
+  
   return (
     <section 
       className="relative min-h-[70vh] flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url(${heroBackground})`,
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url(${optimizedBgUrl}), url(${fallbackBgUrl})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed'
       }}
     >
-      {/* Retro Music Interactive Effects */}
-      <RetroMusicEffects />
+      {/* Background Effects */}
+      <BackgroundFX />
 
       {/* Animated Background Elements */}
       <div className="absolute inset-0">
@@ -31,15 +41,8 @@ export default function HeroSection({ onPlayPreview, onDownload }: HeroSectionPr
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
-          <div className="inline-block mb-6">
-            <span className="px-4 py-2 bg-primary/20 backdrop-blur-sm border border-primary/30 rounded-full text-primary font-body font-semibold">
-              New Release
-            </span>
-          </div>
-
           {/* Main Heading */}
-          <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-none">
+          <h1 className="font-display font-black text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-none mt-8">
             <span className="bg-gradient-to-r from-primary via-chart-2 to-chart-3 bg-clip-text text-transparent">
               EVOK TECH DJ
             </span>
@@ -57,6 +60,8 @@ export default function HeroSection({ onPlayPreview, onDownload }: HeroSectionPr
               Revive la mejor época musical con Evok Tech DJ!
             </p>
           </div>
+
+
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

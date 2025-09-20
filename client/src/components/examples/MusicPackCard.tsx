@@ -1,5 +1,6 @@
 import { useState } from "react";
-import MusicPackCard, { type MusicPack } from "../MusicPackCard";
+import MusicPackCard from "../MusicPackCard";
+import { type MusicPack } from "@shared/schema";
 import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
 
 export default function MusicPackCardExample() {
@@ -16,7 +17,11 @@ export default function MusicPackCardExample() {
     genre: "Remix/House",
     size: "120 MB",
     releaseDate: "2025-01-15",
-    featured: true
+    featured: true,
+    audioPreviewUrl: null,
+    downloadUrl: null,
+    createdAt: null,
+    updatedAt: null
   };
   
   return (

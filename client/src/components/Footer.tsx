@@ -28,7 +28,7 @@ export default function Footer() {
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
                 Music Packs
               </a>
-              <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
+              <a href="/curso-dj" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
                 Curso de DJ
               </a>
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
@@ -42,7 +42,7 @@ export default function Footer() {
 
           {/* Genres */}
           <div className="space-y-4">
-            <h3 className="font-display font-semibold text-card-foreground">Funk Videos</h3>
+            <h3 className="font-display font-semibold text-card-foreground">Vídeos</h3>
             <nav className="space-y-2">
               <a href="#" className="block text-muted-foreground hover:text-primary transition-colors font-body text-sm">
                 Evok Tech DJ
