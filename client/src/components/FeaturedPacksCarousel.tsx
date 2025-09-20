@@ -40,7 +40,7 @@ export default function FeaturedPacksCarousel({
   const scrollToIndex = (index: number) => {
     setCurrentIndex(index);
     if (carouselRef.current) {
-      const cardWidth = 320; // Approximate card width
+      const cardWidth = 240; // Reduced card width
       carouselRef.current.scrollTo({
         left: index * cardWidth,
         behavior: 'smooth'
@@ -104,7 +104,7 @@ export default function FeaturedPacksCarousel({
           {/* Carousel */}
           <div 
             ref={carouselRef}
-            className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-12"
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-12"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {packs.map((pack, index) => {
@@ -113,18 +113,18 @@ export default function FeaturedPacksCarousel({
               return (
                 <Card 
                   key={pack.id}
-                  className="flex-shrink-0 w-80 h-96 relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 hover:shadow-2xl"
+                  className="flex-shrink-0 w-60 h-72 relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 hover:shadow-2xl"
                   onClick={() => onPackClick?.(pack.id)}
                 >
                   {/* Background Gradient */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${theme.bg} opacity-90`} />
                   
                   {/* Content */}
-                  <div className="relative z-10 p-6 h-full flex flex-col justify-between text-white">
+                  <div className="relative z-10 p-4 h-full flex flex-col justify-between text-white">
                     {/* Header */}
                     <div>
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-sm font-semibold opacity-80">Pack</span>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-semibold opacity-80">Pack</span>
                         {pack.featured && (
                           <span className={`px-2 py-1 ${theme.accent} text-white text-xs font-bold rounded`}>
                             THE BEST
@@ -132,21 +132,21 @@ export default function FeaturedPacksCarousel({
                         )}
                       </div>
                       
-                      <h3 className="font-display font-bold text-2xl mb-2 leading-tight">
+                      <h3 className="font-display font-bold text-lg mb-2 leading-tight">
                         {pack.title}
                       </h3>
                       
-                      <p className="text-white/80 font-body text-sm mb-4">
+                      <p className="text-white/80 font-body text-xs mb-3">
                         {pack.artist}
                       </p>
                     </div>
 
                     {/* Stats */}
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between text-sm">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs">
                         <span className="flex items-center gap-2">
-                          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                            <Music className="w-4 h-4" />
+                          <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                            <Music className="w-3 h-3" />
                           </div>
                           {pack.tracks} músicas
                         </span>
@@ -156,42 +156,42 @@ export default function FeaturedPacksCarousel({
                       {/* Price */}
                       <div className="flex items-center justify-between">
                         <div>
-                          <span className="text-2xl font-bold">R$ 50,00</span>
-                          <span className="text-sm text-white/60 line-through ml-2">R$ 75,00</span>
+                          <span className="text-lg font-bold">R$ 50,00</span>
+                          <span className="text-xs text-white/60 line-through ml-2">R$ 75,00</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex gap-2 mt-4">
+                    <div className="flex gap-2 mt-3">
                       <Button
                         size="sm"
-                        className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                        className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm text-xs"
                         onClick={(e) => {
                           e.stopPropagation();
                           onPackPlay?.(pack.id);
                         }}
                       >
-                        <Play className="w-4 h-4 mr-2" />
+                        <Play className="w-3 h-3 mr-1" />
                         Preview
                       </Button>
                       
                       <Button
                         size="sm"
-                        className="bg-white text-gray-900 hover:bg-white/90"
+                        className="bg-white text-gray-900 hover:bg-white/90 px-2"
                         onClick={(e) => {
                           e.stopPropagation();
                           onPackDownload?.(pack.id);
                         }}
                       >
-                        <Download className="w-4 h-4" />
+                        <Download className="w-3 h-3" />
                       </Button>
                     </div>
                   </div>
 
                   {/* Decorative Elements */}
-                  <div className="absolute top-4 right-4 w-16 h-16 bg-white/10 rounded-full opacity-50" />
-                  <div className="absolute bottom-4 left-4 w-8 h-8 bg-white/10 rounded-full opacity-30" />
+                  <div className="absolute top-3 right-3 w-10 h-10 bg-white/10 rounded-full opacity-50" />
+                  <div className="absolute bottom-3 left-3 w-6 h-6 bg-white/10 rounded-full opacity-30" />
                 </Card>
               );
             })}

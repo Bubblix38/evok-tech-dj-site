@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Play, ExternalLink } from "lucide-react";
-import { useState } from "react";
+import { Play, Download, Music, Headphones, Star, Zap } from "lucide-react";
 import { getOptimizedImageUrl } from "@/utils/cdn-config";
-import BackgroundFX from "./BackgroundFX";
+import OptimizedImage from "./OptimizedImage";
+import RetroMusicEffects from "./RetroMusicEffects";
 import { useRadio } from "@/contexts/RadioContext";
+import BackgroundFX from "./BackgroundFX";
 
 interface HeroSectionProps {
   onPlayPreview?: () => void;
@@ -16,8 +18,8 @@ export default function HeroSection({ onPlayPreview, onDownload }: HeroSectionPr
   // Get optimized background image URL - using direct path for better compatibility
   const optimizedBgUrl = getOptimizedImageUrl('90s_music_hero_background_d7797857.png', 1920);
   
-  // Fallback image path for development
-  const fallbackBgUrl = '/attached_assets/generated_images/90s_music_hero_background_d7797857.png';
+  // Fallback image path for development and production
+  const fallbackBgUrl = '/assets/generated_images/90s_music_hero_background_d7797857.png';
   
   return (
     <section 

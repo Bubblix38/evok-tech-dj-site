@@ -1,10 +1,8 @@
-import { useState } from "react";
 import PackGrid from "../PackGrid";
 import { type MusicPack } from "@shared/schema";
-import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
+import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48_optimized.jpg";
 
 export default function PackGridExample() {
-  const [isDarkMode] = useState(true);
   
   // todo: remove mock functionality
   const mockPacks: MusicPack[] = [
@@ -107,17 +105,15 @@ export default function PackGridExample() {
   ];
   
   return (
-    <div className={isDarkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-background">
-        <PackGrid 
-          packs={mockPacks}
-          title="Featured Music Packs"
-          subtitle="Discover our premium collection of remixed classics and modern beats"
-          onPackPlay={(id) => console.log("Play pack:", id)}
-          onPackDownload={(id) => console.log("Download pack:", id)}
-          onPackClick={(id) => console.log("View pack details:", id)}
-        />
-      </div>
+    <div className="min-h-screen bg-background">
+      <PackGrid 
+        packs={mockPacks}
+        title="Featured Music Packs"
+        subtitle="Discover our premium collection of remixed classics and modern beats"
+        onPackPlay={(id) => console.log("Play pack:", id)}
+        onPackDownload={(id) => console.log("Download pack:", id)}
+        onPackClick={(id) => console.log("View pack details:", id)}
+      />
     </div>
   );
 }

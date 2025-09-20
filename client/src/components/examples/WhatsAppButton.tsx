@@ -2,7 +2,7 @@ import { useState } from "react";
 import WhatsAppButton from "../WhatsAppButton";
 
 export default function WhatsAppButtonExample() {
-  const [isDarkMode] = useState(true);
+  const [isDarkMode] = useState(false); // Sempre modo light
   
   return (
     <div className={isDarkMode ? "dark" : ""}>

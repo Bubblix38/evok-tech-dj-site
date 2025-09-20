@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
 import PackGrid from "../components/PackGrid";
@@ -7,14 +7,15 @@ import BestSellersSection from "../components/BestSellersSection";
 import AudioPlayer from "../components/AudioPlayer";
 import WhatsAppButton from "../components/WhatsAppButton";
 import Footer from "../components/Footer";
-import BackgroundFX from "../components/BackgroundFX";
+import { LazyBackgroundFX } from "../utils/lazyLoad";
 import GlobalRadioPlayer from "../components/GlobalRadioPlayer";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { FeaturedCarouselSkeleton, PackGridSkeleton } from "../components/SkeletonLoader";
 import { useMusicPacks, useFeaturedPacks, downloadMusicPack } from "../hooks/useMusicPacks";
 import { type MusicPack } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
   const [currentTrack, setCurrentTrack] = useState<any>(null);
   const [isPlayerVisible, setIsPlayerVisible] = useState(false);
   const { toast } = useToast();
@@ -76,20 +77,13 @@ export default function Home() {
     }
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    console.log("Theme toggled:", !isDarkMode ? "dark" : "light");
-  };
-
   return (
-    <div className={isDarkMode ? "dark" : ""}>
-      <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative">
         {/* Background particles and scanlines effect */}
-        <BackgroundFX scope="home" density="low" enabled={true} />
-        <Header 
-          isDarkMode={isDarkMode}
-          onThemeToggle={toggleTheme}
-        />
+        <Suspense fallback={null}>
+          <LazyBackgroundFX scope="home" density="low" enabled={true} />
+        </Suspense>
+        <Header />
 
         <main>
           <HeroSection 
@@ -99,21 +93,18 @@ export default function Home() {
 
           {/* Live Radio Section - Removed since it's now in header */}
           
-          {featuredPacksError ? (
-            <div className="py-12 text-center">
-              <div className="text-muted-foreground font-body">Failed to load featured packs. Please refresh the page.</div>
-            </div>
-          ) : isLoadingFeatured ? (
-            <div className="py-12 text-center">
-              <div className="text-muted-foreground font-body">Loading featured packs...</div>
-            </div>
-          ) : (
+          {featuredPacks.length > 0 ? (
             <FeaturedPacksCarousel 
-              packs={featuredPacks}
+              packs={featuredPacks} 
               onPackPlay={handlePackPlay}
               onPackDownload={handlePackDownload}
-              onPackClick={handlePackClick}
             />
+          ) : isLoadingFeatured ? (
+            <FeaturedCarouselSkeleton />
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-muted-foreground font-body">Nenhum pack em destaque disponível no momento.</p>
+            </div>
           )}
 
           {/* Best Sellers Section */}
@@ -155,7 +146,6 @@ export default function Home() {
           phoneNumber="59895905365"
           message="Hi! I'm interested in your music packs. Can you provide more information?"
         />
-      </div>
     </div>
   );
 }

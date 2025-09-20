@@ -1,0 +1,128 @@
+/* Performance optimizations for mobile devices */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Optimize animations for better performance */
+.animate-spin,
+.animate-pulse,
+.animate-bounce {
+  will-change: transform;
+}
+
+/* Prevent layout shifts during image loading */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-container::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+}
+
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Optimize scrolling performance */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Reduce repaints and reflows */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  .complex-animation {
+    animation: none !important;
+  }
+  
+  /* Simplify gradients on mobile */
+  .gradient-complex {
+    background: linear-gradient(45deg, var(--primary), var(--secondary)) !important;
+  }
+  
+  /* Reduce blur effects on mobile */
+  .backdrop-blur-md {
+    backdrop-filter: blur(4px) !important;
+  }
+  
+  .backdrop-blur-lg {
+    backdrop-filter: blur(6px) !important;
+  }
+}
+
+/* Prevent flickering during transitions */
+.transition-opacity,
+.transition-transform,
+.transition-all {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Optimize canvas rendering */
+canvas {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* Reduce paint complexity */
+.shadow-lg,
+.shadow-xl {
+  will-change: box-shadow;
+}
+
+/* Optimize text rendering */
+.font-display,
+.font-body {
+  text-rendering: optimizeSpeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent unnecessary repaints */
+.fixed,
+.sticky {
+  will-change: transform;
+}
+
+/* Optimize hover effects for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:hover,
+  .hover\:scale-110:hover,
+  .group-hover\:scale-110 {
+    transform: none !important;
+  }
+  
+  .hover\:shadow-xl:hover {
+    box-shadow: none !important;
+  }
+}

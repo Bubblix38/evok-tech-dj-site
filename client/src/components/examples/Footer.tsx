@@ -2,7 +2,7 @@ import { useState } from "react";
 import Footer from "../Footer";
 
 export default function FooterExample() {
-  const [isDarkMode] = useState(true);
+  const [isDarkMode] = useState(false); // Sempre modo light
   
   return (
     <div className={isDarkMode ? "dark" : ""}>

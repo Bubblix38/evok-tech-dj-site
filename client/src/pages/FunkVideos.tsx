@@ -4,7 +4,8 @@ import GlobalRadioPlayer from "@/components/GlobalRadioPlayer";
 import { Button } from "@/components/ui/button";
 import { Play, ExternalLink, Shield, AlertTriangle, Ban } from "lucide-react";
 import { useState } from "react";
-import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88_optimized.jpg";
 import VideoProtection from "@/components/VideoProtection";
 import BackgroundFX from "@/components/BackgroundFX";
 
@@ -122,7 +123,7 @@ function CustomVideoPlayer() {
       return (
         <div className="aspect-video relative bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 rounded-t-lg">
           <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-8">
-            <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <LoadingSpinner size="lg" text="Carregando Vídeo..." />
             <h3 className="text-xl font-bold mb-2 text-center">Carregando Vídeo...</h3>
             <p className="text-center text-sm text-gray-300">
               "A Caminho da Treta" - Noobreak, Douth! & DFranco

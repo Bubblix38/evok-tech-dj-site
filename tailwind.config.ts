@@ -1,7 +1,8 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindcssTypography from "@tailwindcss/typography";
 
 export default {
-  darkMode: ["class"],
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
@@ -83,11 +84,11 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Orbitron", "sans-serif"],
+        sans: ["var(--font-orbitron, Orbitron)", "Orbitron-fallback", "Helvetica Neue", "Arial", "sans-serif"],
         serif: ["Georgia", "serif"],
         mono: ["Menlo", "monospace"],
-        display: ["Orbitron", "sans-serif"],
-        body: ["Inter", "sans-serif"],
+        display: ["var(--font-orbitron, Orbitron)", "Orbitron-fallback", "Helvetica Neue", "Arial", "sans-serif"],
+        body: ["var(--font-inter, Inter)", "Inter-fallback", "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -105,5 +106,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [tailwindcssAnimate, tailwindcssTypography],
 } satisfies Config;

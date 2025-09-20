@@ -1,10 +1,10 @@
 import { useState } from "react";
 import MusicPackCard from "../MusicPackCard";
 import { type MusicPack } from "@shared/schema";
-import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
+import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48_optimized.jpg";
 
 export default function MusicPackCardExample() {
-  const [isDarkMode] = useState(true);
+  const [isDarkMode] = useState(false); // Sempre modo light
   
   // todo: remove mock functionality
   const mockPack: MusicPack = {

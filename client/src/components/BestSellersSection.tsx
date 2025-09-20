@@ -47,47 +47,47 @@ export default function BestSellersSection({
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {bestSellerPacks.map((pack, index) => {
             const theme = packThemes[index % packThemes.length];
             
             return (
               <Card 
                 key={pack.id}
-                className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 hover:shadow-2xl h-80"
+                className="relative overflow-hidden cursor-pointer group hover:scale-105 transition-all duration-300 hover:shadow-2xl h-64"
                 onClick={() => onPackClick?.(pack.id)}
               >
                 {/* Background Gradient */}
                 <div className={`absolute inset-0 bg-gradient-to-br ${theme.bg} opacity-90`} />
                 
                 {/* Content */}
-                <div className="relative z-10 p-6 h-full flex flex-col justify-between text-white">
+                <div className="relative z-10 p-4 h-full flex flex-col justify-between text-white">
                   {/* Header */}
                   <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-sm font-semibold opacity-80">Pack</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-xs font-semibold opacity-80">Pack</span>
                       <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                         <span className={`px-2 py-1 ${theme.accent} text-white text-xs font-bold rounded`}>
                           THE BEST
                         </span>
                       </div>
                     </div>
                     
-                    <h3 className="font-display font-bold text-xl mb-2 leading-tight">
+                    <h3 className="font-display font-bold text-lg mb-2 leading-tight">
                       {pack.title}
                     </h3>
                     
-                    <p className="text-white/80 font-body text-sm mb-4">
+                    <p className="text-white/80 font-body text-xs mb-3">
                       {pack.artist}
                     </p>
                   </div>
 
                   {/* Stats */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between text-sm">
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs">
                       <span className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
+                        <div className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center">
                           <Music className="w-3 h-3" />
                         </div>
                         {pack.tracks} músicas
@@ -98,18 +98,18 @@ export default function BestSellersSection({
                     {/* Price */}
                     <div className="flex items-center justify-between">
                       <div>
-                        <span className="text-xl font-bold">R$ 50,00</span>
-                        <span className="text-sm text-white/60 line-through ml-2">R$ 75,00</span>
+                        <span className="text-lg font-bold">R$ 50,00</span>
+                        <span className="text-xs text-white/60 line-through ml-2">R$ 75,00</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Actions */}
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2 mt-3">
                     <Button
                       size="sm"
                       variant="outline"
-                      className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm"
+                      className="flex-1 bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur-sm text-xs"
                       onClick={(e) => {
                         e.stopPropagation();
                         onPackPlay?.(pack.id);
@@ -121,11 +121,11 @@ export default function BestSellersSection({
                 </div>
 
                 {/* Decorative Elements */}
-                <div className="absolute top-4 right-4 w-12 h-12 bg-white/10 rounded-full opacity-50" />
-                <div className="absolute bottom-4 left-4 w-6 h-6 bg-white/10 rounded-full opacity-30" />
+                <div className="absolute top-3 right-3 w-8 h-8 bg-white/10 rounded-full opacity-50" />
+                <div className="absolute bottom-3 left-3 w-4 h-4 bg-white/10 rounded-full opacity-30" />
                 
                 {/* Bestseller Badge */}
-                <div className="absolute top-0 right-0 bg-yellow-500 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
+                <div className="absolute top-0 right-0 bg-yellow-500 text-black text-xs font-bold px-2 py-1 rounded-bl-lg">
                   #{index + 1}
                 </div>
               </Card>

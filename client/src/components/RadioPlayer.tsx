@@ -1,9 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { Play, Pause, Volume1, Volume2, VolumeX, Radio, Music, Download, ExternalLink } from 'lucide-react';
+import { Play, Pause, Volume1, Volume2, VolumeX, Radio, Music, Download, ExternalLink, SkipBack, SkipForward, Repeat, Shuffle, Heart, Share2, MoreHorizontal, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useRadio } from '@/contexts/RadioContext';
+import LoadingSpinner from './LoadingSpinner';
 
 interface RadioPlayerProps {
   className?: string;
@@ -355,7 +359,7 @@ export default function RadioPlayer({ className = '' }: RadioPlayerProps) {
             data-testid="button-radio-play"
           >
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+              <LoadingSpinner size="sm" />
             ) : isPlaying ? (
               <Pause className="w-5 h-5" />
             ) : (

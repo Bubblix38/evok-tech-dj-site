@@ -2,7 +2,7 @@ import { useState } from "react";
 import AudioPlayer from "../AudioPlayer";
 
 export default function AudioPlayerExample() {
-  const [isDarkMode] = useState(true);
+  const [isDarkMode] = useState(false); // Sempre modo light
   const [isPlayerVisible, setIsPlayerVisible] = useState(true);
   
   // todo: remove mock functionality

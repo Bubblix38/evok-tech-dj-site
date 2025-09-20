@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useRef, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect, useCallback, ReactNode } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { mockRadioData } from '@/data/mockData';
@@ -43,6 +43,12 @@ interface RadioContextType {
   // Estado do download em tempo real
   isDownloading: boolean;
   downloadProgress: number;
+  
+  // Estado da conexão e fallbacks
+  connectionStatus: 'connected' | 'connecting' | 'failed' | 'retrying';
+  currentStreamIndex: number;
+  retryCount: number;
+  streamUrls: string[];
   
   // Controles
   togglePlay: () => Promise<void>;
@@ -98,7 +104,20 @@ export function RadioProvider({ children }: RadioProviderProps) {
   const downloadRecorderRef = useRef<MediaRecorder | null>(null);
   const downloadChunksRef = useRef<Blob[]>([]);
   const downloadStartTimeRef = useRef<number>(0);
-  const streamUrl = 'https://breakz-high.rautemusik.fm/';
+  
+  // Multiple stream URLs for fallback
+  const streamUrls = [
+    'https://breakz-high.rautemusik.fm/',
+    'https://breakz.rautemusik.fm/',
+    'https://stream.rautemusik.fm/breakz',
+    'https://listen.rautemusik.fm/breakz'
+  ];
+  
+  // Current stream index and retry state
+  const [currentStreamIndex, setCurrentStreamIndex] = useState(0);
+  const [retryCount, setRetryCount] = useState(0);
+  const [connectionStatus, setConnectionStatus] = useState<'connected' | 'connecting' | 'failed' | 'retrying'>('connected');
+  const maxRetries = 3;
 
   // Simulação de músicas reais do EVOK.FM
   const breakzFmTracks = [
@@ -193,34 +212,85 @@ export function RadioProvider({ children }: RadioProviderProps) {
     }
   }, [volume]);
 
+  // Retry with exponential backoff
+  const retryConnection = React.useCallback(async () => {
+    if (retryCount >= maxRetries) {
+      setConnectionStatus('failed');
+      setError('Não foi possível conectar à rádio. Tente novamente mais tarde.');
+      setIsPlaying(false);
+      return;
+    }
+
+    const nextStreamIndex = (currentStreamIndex + 1) % streamUrls.length;
+    const delay = Math.pow(2, retryCount) * 1000; // Exponential backoff: 1s, 2s, 4s
+
+    setConnectionStatus('retrying');
+    setRetryCount(prev => prev + 1);
+
+    setTimeout(async () => {
+      setCurrentStreamIndex(nextStreamIndex);
+      const audio = audioRef.current;
+      if (audio) {
+        try {
+          audio.src = streamUrls[nextStreamIndex];
+          audio.load();
+          await audio.play();
+          setConnectionStatus('connected');
+          setRetryCount(0);
+          setError(null);
+        } catch (error) {
+          retryConnection();
+        }
+      }
+    }, delay);
+  }, [retryCount, currentStreamIndex, streamUrls, maxRetries]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     const handleLoadStart = () => {
       setIsLoading(true);
+      setConnectionStatus('connecting');
       setError(null);
     };
+    
     const handleCanPlay = () => {
       setIsLoading(false);
+      setConnectionStatus('connected');
+      setRetryCount(0);
       setError(null);
     };
+    
     const handleError = (e: Event) => {
       setIsLoading(false);
-      setError('Falha ao conectar com a rádio');
-      setIsPlaying(false);
+      console.error('Stream error:', e);
+      
+      // Only retry if we were trying to play
+      if (isPlaying) {
+        retryConnection();
+      } else {
+        setConnectionStatus('failed');
+        setError('Falha ao conectar com a rádio');
+        setIsPlaying(false);
+      }
     };
+    
     const handleLoadedData = () => {
       setIsLoading(false);
+      setConnectionStatus('connected');
     };
+    
     const handlePause = () => {
       // Only update state if it wasn't manually paused
       if (isPlaying && !audio.ended) {
         setIsPlaying(false);
       }
     };
+    
     const handlePlay = () => {
       setIsPlaying(true);
+      setConnectionStatus('connected');
     };
 
     audio.addEventListener('loadstart', handleLoadStart);
@@ -238,7 +308,7 @@ export function RadioProvider({ children }: RadioProviderProps) {
       audio.removeEventListener('pause', handlePause);
       audio.removeEventListener('play', handlePlay);
     };
-  }, [isPlaying]);
+  }, [isPlaying, retryConnection]);
 
   const togglePlay = async () => {
     const audio = audioRef.current;
@@ -252,13 +322,18 @@ export function RadioProvider({ children }: RadioProviderProps) {
         audio.pause();
         setIsPlaying(false);
         setIsLoading(false);
+        setConnectionStatus('connected');
       } else {
         setIsLoading(true);
+        setConnectionStatus('connecting');
         setError(null);
+        setRetryCount(0); // Reset retry count on manual play
         
-        // Only set src if it's not already set to avoid reloading
-        if (audio.src !== streamUrl) {
-          audio.src = streamUrl;
+        const currentStreamUrl = streamUrls[currentStreamIndex];
+        
+        // Only set src if it's different to avoid reloading
+        if (audio.src !== currentStreamUrl) {
+          audio.src = currentStreamUrl;
           audio.volume = isMuted ? 0 : volume;
           audio.load();
         }
@@ -270,10 +345,15 @@ export function RadioProvider({ children }: RadioProviderProps) {
         refetchNowPlaying();
       }
     } catch (err) {
-      setError('Erro ao reproduzir. Verifique sua conexão.');
-      setIsPlaying(false);
+      console.error('Play error:', err);
+      // Trigger retry mechanism
+      if (!isPlaying) {
+        retryConnection();
+      }
     } finally {
-      setIsLoading(false);
+      if (!isPlaying) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -546,6 +626,10 @@ export function RadioProvider({ children }: RadioProviderProps) {
     currentTrackName,
     isDownloading,
     downloadProgress,
+    connectionStatus,
+    currentStreamIndex,
+    retryCount,
+    streamUrls,
     togglePlay,
     setVolume,
     toggleMute,

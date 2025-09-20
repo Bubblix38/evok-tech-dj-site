@@ -124,89 +124,6 @@
   /* Vite 5 removes empty fallback selectors, but this should be kept for browsers */
 }
 
-.dark {
-  --button-outline: rgba(255,255,255, .10);
-  --badge-outline: rgba(255,255,255, .05);
-
-  --opaque-button-border-intensity: 9;  /* In terms of percentages */
-
-  /* Backgrounds applied on top of other backgrounds when hovered/active */
-  --elevate-1: rgba(255,255,255, .04);
-  --elevate-2: rgba(255,255,255, .09);
-
-  --background: 280 15% 12%;
-
-  --foreground: 280 8% 88%;
-
-  --border: 280 12% 20%;
-
-  --card: 280 12% 16%;
-
-  --card-foreground: 280 8% 85%;
-
-  --card-border: 280 12% 22%;
-
-  --sidebar: 280 10% 14%;
-
-  --sidebar-foreground: 280 8% 82%;
-
-  --sidebar-border: 280 12% 18%;
-
-  --sidebar-primary: 280 75% 65%;
-
-  --sidebar-primary-foreground: 280 10% 15%;
-
-  --sidebar-accent: 280 12% 20%;
-
-  --sidebar-accent-foreground: 280 8% 80%;
-
-  --sidebar-ring: 280 75% 65%;
-
-  --popover: 280 12% 18%;
-
-  --popover-foreground: 280 8% 80%;
-
-  --popover-border: 280 12% 24%;
-
-  --primary: 280 75% 65%;
-
-  --primary-foreground: 280 10% 15%;
-
-  --secondary: 280 12% 22%;
-
-  --secondary-foreground: 280 8% 78%;
-
-  --muted: 280 12% 20%;
-
-  --muted-foreground: 280 8% 65%;
-
-  --accent: 280 15% 18%;
-
-  --accent-foreground: 280 8% 75%;
-
-  --destructive: 0 70% 58%;
-
-  --destructive-foreground: 0 8% 92%;
-
-  --input: 280 15% 30%;
-  --ring: 280 75% 65%;
-  --chart-1: 280 80% 70%;
-  --chart-2: 45 85% 70%;
-  --chart-3: 200 75% 70%;
-  --chart-4: 320 70% 70%;
-  --chart-5: 160 70% 65%;
-
-  --shadow-2xs: 0px 2px 0px 0px hsl(280 15% 5% / 0.30);
-  --shadow-xs: 0px 2px 0px 0px hsl(280 15% 5% / 0.35);
-  --shadow-sm: 0px 2px 0px 0px hsl(280 15% 5% / 0.35), 0px 1px 2px -1px hsl(280 15% 5% / 0.40);
-  --shadow: 0px 2px 0px 0px hsl(280 15% 5% / 0.40), 0px 1px 2px -1px hsl(280 15% 5% / 0.45);
-  --shadow-md: 0px 2px 0px 0px hsl(280 15% 5% / 0.45), 0px 2px 4px -1px hsl(280 15% 5% / 0.50);
-  --shadow-lg: 0px 2px 0px 0px hsl(280 15% 5% / 0.50), 0px 4px 6px -1px hsl(280 15% 5% / 0.55);
-  --shadow-xl: 0px 2px 0px 0px hsl(280 15% 5% / 0.55), 0px 8px 10px -1px hsl(280 15% 5% / 0.60);
-  --shadow-2xl: 0px 2px 0px 0px hsl(280 15% 5% / 0.70);
-
-}
-
 @layer base {
   * {
     @apply border-border;
@@ -254,9 +171,13 @@
   /* .no-default-hover-elevate/no-default-active-elevate is an escape hatch so consumers of
    * buttons/badges can remove the automatic brightness adjustment on interactions
    * and program their own. */
-  .no-default-hover-elevate {}
+  .no-default-hover-elevate {
+    /* Placeholder for custom hover styles */
+  }
 
-  .no-default-active-elevate {}
+  .no-default-active-elevate {
+    /* Placeholder for custom active styles */
+  }
 
 
   /**
@@ -338,15 +259,10 @@
     }
   }
 
-  /* Scanlines overlay with different opacities for light/dark mode */
+  /* Scanlines overlay for light mode only */
   .scanlines-overlay {
     background: repeating-linear-gradient(0deg, rgba(0,0,0,.03) 0 1px, transparent 1px 3px);
     animation: scanlines 6s linear infinite;
-    opacity: 0.05;
-  }
-
-  .dark .scanlines-overlay {
-    background: repeating-linear-gradient(0deg, rgba(0,0,0,.05) 0 1px, transparent 1px 3px);
     opacity: 0.05;
   }
 

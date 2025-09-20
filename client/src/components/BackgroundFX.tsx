@@ -43,17 +43,17 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // Get responsive particle count
+  // Get responsive particle count - OTIMIZADO para mobile
   const getParticleCount = useCallback((density: string): number => {
-    const baseCount = density === 'med' ? 1.5 : 1;
+    const baseCount = density === 'med' ? 1.2 : 1;
     const width = window.innerWidth;
     
     if (width >= 1024) { // Desktop
-      return Math.floor((35 + Math.random() * 15) * baseCount); // 35-50 for low, 52-75 for med
+      return Math.floor((25 + Math.random() * 10) * baseCount); // Reduzido: 25-35 para low, 30-42 para med
     } else if (width >= 768) { // Tablet
-      return Math.floor((25 + Math.random() * 10) * baseCount); // 25-35 for low, 37-52 for med
+      return Math.floor((15 + Math.random() * 8) * baseCount); // Reduzido: 15-23 para low, 18-27 para med
     } else { // Mobile
-      return Math.floor((15 + Math.random() * 8) * baseCount); // 15-23 for low, 22-34 for med
+      return Math.floor((8 + Math.random() * 5) * baseCount); // Muito reduzido: 8-13 para low, 9-15 para med
     }
   }, []);
 
@@ -89,7 +89,7 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
 
   // Initialize particles
   const initParticles = useCallback((canvas: HTMLCanvasElement) => {
-    const count = Math.min(getParticleCount(density), 75); // Max 75 particles (aumentado de 40)
+    const count = Math.min(getParticleCount(density), 35); // Reduzido de 75 para 35 max particles
     particlesRef.current = Array.from({ length: count }, () => createParticle(canvas));
   }, [density, getParticleCount, createParticle]);
 
@@ -152,7 +152,7 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
     ctx.restore();
   }, []);
 
-  // Animation loop
+  // Animation loop - OTIMIZADO com throttling
   const animate = useCallback((currentTime: number) => {
     const canvas = canvasRef.current;
     if (!canvas || !enabled || prefersReducedMotion()) {
@@ -171,6 +171,17 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
     }
 
     const deltaTime = currentTime - lastTimeRef.current;
+    
+    // Throttle animation to ~30fps on mobile for better performance
+    const isMobile = window.innerWidth < 768;
+    const targetFPS = isMobile ? 30 : 60;
+    const frameInterval = 1000 / targetFPS;
+    
+    if (deltaTime < frameInterval) {
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
+    
     lastTimeRef.current = currentTime;
 
     // Clear canvas
@@ -254,19 +265,28 @@ const BackgroundFX = ({ scope = 'all', density = 'low', enabled = true }: Backgr
   }
 
   return (
-    <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-      {/* Canvas for particles */}
+    <div className="fixed inset-0 -z-10 gpu-accelerated">
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full"
-        style={{
-          width: '100%',
-          height: '100%',
+        className="w-full h-full gpu-accelerated"
+        style={{ 
+          background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%)',
+          imageRendering: 'pixelated' as const
         }}
       />
-      
-      {/* Scanlines overlay */}
-      <div className="absolute inset-0 w-full h-full scanlines-overlay" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/20 pointer-events-none gpu-accelerated" />
+      <div 
+        className="absolute inset-0 opacity-[0.02] pointer-events-none gpu-accelerated"
+        style={{
+          backgroundImage: `repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 0, 0.1) 2px,
+            rgba(0, 255, 0, 0.1) 4px
+          )`
+        }}
+      />
     </div>
   );
 };

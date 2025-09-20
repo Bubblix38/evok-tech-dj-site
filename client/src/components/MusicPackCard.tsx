@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Play, Download, Clock } from "lucide-react";
 import { type MusicPack } from "@shared/schema";
-import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48.png";
-import LazyImage from "./LazyImage";
+import packCover from "@assets/generated_images/90s_remix_pack_cover_cf424b48_optimized.jpg";
+import LazyImage from "./OptimizedImage";
 
 interface MusicPackCardProps {
   pack: MusicPack;
@@ -14,7 +14,7 @@ interface MusicPackCardProps {
 
 export default function MusicPackCard({ pack, onPlay, onDownload, onClick }: MusicPackCardProps) {
   return (
-    <Card className="group relative overflow-hidden bg-card hover-elevate transition-all duration-300 cursor-pointer">
+    <Card className="group relative overflow-hidden bg-card hover-elevate transition-all duration-200 cursor-pointer gpu-accelerated">
       {/* Featured Badge */}
       {pack.featured && (
         <div className="absolute top-2 left-2 z-10">
@@ -31,14 +31,16 @@ export default function MusicPackCard({ pack, onPlay, onDownload, onClick }: Mus
       >
         <LazyImage 
           src={pack.coverUrl || packCover} 
-          alt={pack.title}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-          placeholder="Carregando..."
+          alt={`${pack.title} cover`}
+          className="w-full h-full object-cover rounded-t-lg transition-transform duration-300 group-hover:scale-105"
+          placeholder="Carregando capa..."
           data-testid={`img-pack-cover-${pack.id}`}
+          width={400}
+          height={300}
         />
         
         {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <div className="absolute inset-0 flex items-center justify-center">
             <Button
               variant="secondary"

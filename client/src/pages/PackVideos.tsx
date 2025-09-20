@@ -3,10 +3,11 @@ import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Play, ExternalLink, Shield, AlertTriangle, Ban, Volume2, Settings, Maximize, Download, Share2, Heart, Star } from "lucide-react";
 import { useState } from "react";
-import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88.png";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import thumbnailImage from "@assets/generated_images/music_video_thumbnail_design_4769ff88_optimized.jpg";
 import VideoProtection from "@/components/VideoProtection";
 import BackgroundFX from "@/components/BackgroundFX";
-import LazyImage from "@/components/LazyImage";
+import LazyImage from "@/components/OptimizedImage";
 
 function CustomVideoPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -127,10 +128,7 @@ function CustomVideoPlayer() {
       <div className="aspect-video relative">
         {loadingState === 'loading' && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-            <div className="text-white text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
-              <p className="text-sm">Carregando vídeo...</p>
-            </div>
+            <LoadingSpinner size="lg" text="Carregando vídeo..." />
           </div>
         )}
         
@@ -178,6 +176,9 @@ function CustomVideoPlayer() {
         alt="A Caminho da Treta - Video Thumbnail" 
         className="w-full h-full object-cover rounded-t-lg transition-transform duration-500 group-hover:scale-110"
         placeholder="Carregando thumbnail..."
+        priority={true}
+        width={800}
+        height={450}
       />
       
       {/* Gradient Overlay */}
@@ -363,8 +364,8 @@ export default function PackVideos() {
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Video Card 1 */}
-          <div className="group relative rounded-xl overflow-hidden bg-gradient-to-br from-card to-card/80 border border-border/50 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:scale-105 hover:-translate-y-2">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <div className="group relative rounded-xl overflow-hidden bg-gradient-to-br from-card to-card/80 border border-border/50 shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:scale-[1.02] hover:-translate-y-1 gpu-accelerated">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             <div className="relative z-10">
               <CustomVideoPlayer />
               <div className="p-6">
@@ -380,10 +381,10 @@ export default function PackVideos() {
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-2xl font-black text-primary group-hover:scale-110 transition-transform duration-300">R$ 35,99</span>
+                    <span className="text-2xl font-black text-primary group-hover:scale-105 transition-transform duration-200">R$ 35,99</span>
                     <span className="text-xs text-muted-foreground">Preço promocional</span>
                   </div>
-                  <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl hover:shadow-primary/25 transition-all duration-300 hover:scale-105 group-hover:animate-pulse">
+                  <Button className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 shadow-lg hover:shadow-xl hover:shadow-primary/25 transition-all duration-200 hover:scale-[1.02] gpu-accelerated">
                     <span className="font-bold">Comprar</span>
                   </Button>
                 </div>

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Menu, Music } from "lucide-react";
+import { Menu, Music } from "lucide-react";
 import { Link } from "wouter";
 
 interface HeaderProps {
-  onThemeToggle?: () => void;
-  isDarkMode?: boolean;
+  // Removed theme-related props
 }
 
-export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps) {
+export default function Header({}: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -42,22 +41,8 @@ export default function Header({ onThemeToggle, isDarkMode = true }: HeaderProps
               </a>
             </nav>
 
-            {/* Theme Toggle & Mobile Menu */}
+            {/* Mobile Menu Button */}
             <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={onThemeToggle}
-                data-testid="button-theme-toggle"
-                className="hover-elevate"
-              >
-                {isDarkMode ? (
-                  <Sun className="w-5 h-5" />
-                ) : (
-                  <Moon className="w-5 h-5" />
-                )}
-              </Button>
-              
               <Button
                 variant="ghost"
                 size="icon"

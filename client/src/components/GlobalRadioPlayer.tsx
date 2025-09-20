@@ -1,6 +1,8 @@
-import { Play, Pause, Volume1, Volume2, VolumeX, Download } from 'lucide-react';
+import { Play, Pause, Volume1, Volume2, VolumeX, Download, X, Wifi, WifiOff, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import { useRadio } from '@/contexts/RadioContext';
+import LoadingSpinner from './LoadingSpinner';
 
 interface GlobalRadioPlayerProps {
   className?: string;
@@ -13,6 +15,10 @@ export default function GlobalRadioPlayer({ className = '' }: GlobalRadioPlayerP
     isMuted,
     isLoading,
     error,
+    connectionStatus,
+    currentStreamIndex,
+    retryCount,
+    streamUrls,
     togglePlay,
     setVolume,
     toggleMute,
@@ -43,7 +49,7 @@ export default function GlobalRadioPlayer({ className = '' }: GlobalRadioPlayerP
             data-testid="button-radio-play"
           >
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
+              <LoadingSpinner size="sm" />
             ) : isPlaying ? (
               <Pause className="w-5 h-5" />
             ) : (
@@ -57,14 +63,39 @@ export default function GlobalRadioPlayer({ className = '' }: GlobalRadioPlayerP
               <span className="font-semibold text-white">EVOK.FM</span>
               {/* Status indicator ao lado do nome */}
               <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-500'}`} />
+                {connectionStatus === 'connecting' && (
+                  <RotateCcw className="w-3 h-3 text-blue-400 animate-spin" />
+                )}
+                {connectionStatus === 'retrying' && (
+                  <RotateCcw className="w-3 h-3 text-yellow-400 animate-spin" />
+                )}
+                {connectionStatus === 'failed' && (
+                  <WifiOff className="w-3 h-3 text-red-400" />
+                )}
+                {connectionStatus === 'connected' && isPlaying && (
+                  <Wifi className="w-3 h-3 text-green-400" />
+                )}
+                <div className={`w-2 h-2 rounded-full ${
+                  connectionStatus === 'connected' && isPlaying ? 'bg-green-400 animate-pulse' : 
+                  connectionStatus === 'connecting' || connectionStatus === 'retrying' ? 'bg-blue-400 animate-pulse' :
+                  connectionStatus === 'failed' ? 'bg-red-400' : 'bg-gray-500'
+                }`} />
                 <span className="text-xs text-gray-400 font-medium">
-                  {isLoading ? 'Conectando...' : isPlaying ? 'LIVE' : 'Offline'}
+                  {connectionStatus === 'connecting' ? 'Conectando...' : 
+                   connectionStatus === 'retrying' ? `Tentando ${retryCount}/3...` :
+                   connectionStatus === 'failed' ? 'Falha na conexão' :
+                   isPlaying ? 'LIVE' : 'Offline'}
                 </span>
+                {/* Mostrar stream atual quando em retry */}
+                {connectionStatus === 'retrying' && (
+                  <span className="text-xs text-gray-500">
+                    (Stream {currentStreamIndex + 1}/{streamUrls.length})
+                  </span>
+                )}
               </div>
             </div>
             {/* Nome da música atual */}
-            {nowPlaying && isPlaying && (
+            {nowPlaying && isPlaying && connectionStatus === 'connected' && (
               <div className="text-sm text-gray-300 truncate mt-1">
                 <span className="font-medium">{nowPlaying.artist}</span>
                 {nowPlaying.title && (
@@ -73,6 +104,12 @@ export default function GlobalRadioPlayer({ className = '' }: GlobalRadioPlayerP
                     <span>{nowPlaying.title}</span>
                   </>
                 )}
+              </div>
+            )}
+            {/* Mostrar erro quando houver */}
+            {error && (
+              <div className="text-xs text-red-400 truncate mt-1">
+                {error}
               </div>
             )}
           </div>
