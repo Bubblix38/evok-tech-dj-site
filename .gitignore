@@ -4,3 +4,6 @@ dist
 server/public
 vite.config.ts.*
 *.tar.gz
+# Ignore local state but keep attached assets
+.local/state/
+# Keep attached_assets folder for generated images
